@@ -8,3 +8,13 @@ variable "route53_domain_root" {
   type        = string
   description = "Primary domain name"
 }
+
+variable "github_owner" {
+  description = "GitHub org/user"
+  type        = string
+}
+
+variable "github_repo" {
+  description = "Repo name only"
+  type        = string
+}

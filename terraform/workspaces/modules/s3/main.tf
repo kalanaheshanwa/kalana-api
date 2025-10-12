@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "frontend" {
-  bucket = "${var.project_namespace}-static-contents-${var.env}"
+  bucket = "${var.project_namespace}-frontend-${var.env}"
 }
 
 resource "aws_s3_bucket_public_access_block" "frontend" {
