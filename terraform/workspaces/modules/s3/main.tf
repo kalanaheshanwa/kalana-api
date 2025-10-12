@@ -1,3 +1,7 @@
+data "aws_iam_role" "gha_assume_role" {
+  name = "${var.project_namespace}_gha_deploy"
+}
+
 resource "aws_s3_bucket" "frontend" {
   bucket = "${var.project_namespace}-frontend-${var.env}"
 }
@@ -27,6 +31,24 @@ data "aws_iam_policy_document" "frontend" {
       variable = "AWS:SourceArn"
       values   = [var.cloudfront_frontend_arn]
     }
+  }
+
+  statement {
+    sid = "AllowDeployRoleWrite"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_iam_role.gha_assume_role.arn]
+    }
+
+    actions = [
+      "s3:PutObject",
+      "s3:DeleteObject",
+      "s3:GetObject"
+    ]
+
+    resources = ["${aws_s3_bucket.frontend.arn}/*"]
   }
 }
 

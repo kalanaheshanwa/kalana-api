@@ -45,19 +45,10 @@ resource "aws_iam_role" "gha_deploy_role" {
 # S3 deploy policy (minimal but practical for static site deploys)
 data "aws_iam_policy_document" "s3_deploy" {
   statement {
-    sid    = "BucketLevel"
     effect = "Allow"
     actions = [
       "s3:ListBucket",
-      "s3:GetBucketLocation"
-    ]
-    resources = [data.aws_s3_bucket.frontend_dev.arn]
-  }
-
-  statement {
-    sid    = "ObjectLevel"
-    effect = "Allow"
-    actions = [
+      "s3:GetBucketLocation",
       "s3:PutObject",
       "s3:PutObjectAcl",
       "s3:GetObject",
