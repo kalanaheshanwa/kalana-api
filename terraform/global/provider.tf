@@ -20,8 +20,8 @@ provider "aws" {
 
   default_tags {
     tags = {
-      "terraform_managed" = "yes",
-      "terraform_global"  = "yes",
+      "terraform_managed" = "yes"
+      "terraform_global"  = "yes"
       "app_id" = "kalanah"
     }
   }
