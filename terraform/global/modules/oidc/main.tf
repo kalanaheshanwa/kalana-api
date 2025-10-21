@@ -2,6 +2,10 @@ data "aws_s3_bucket" "frontend_dev" {
   bucket = "${var.project_namespace}-frontend-dev"
 }
 
+data "aws_s3_bucket" "frontend_prod" {
+  bucket = "${var.project_namespace}-frontend-prod"
+}
+
 # OIDC provider for GitHub Actions
 resource "aws_iam_openid_connect_provider" "github" {
   url = "https://token.actions.githubusercontent.com"
@@ -56,7 +60,7 @@ data "aws_iam_policy_document" "s3_deploy" {
       "s3:AbortMultipartUpload",
       "s3:ListBucketMultipartUploads"
     ]
-    resources = [data.aws_s3_bucket.frontend_dev.arn]
+    resources = [data.aws_s3_bucket.frontend_dev.arn, data.aws_s3_bucket.frontend_prod.arn]
   }
 }
 
