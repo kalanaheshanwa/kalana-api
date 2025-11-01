@@ -36,3 +36,7 @@ module "cloudfront" {
   domain_frontend_aliases                 = module.acm.domain_frontend_aliases
   route53_zone_id                         = data.aws_route53_zone.root.zone_id
 }
+
+module "dsql" {
+  source = "./modules/dsql"
+}
