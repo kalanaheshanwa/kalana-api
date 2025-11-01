@@ -1,0 +1,17 @@
+# directories
+.husky
+.vscode
+dist
+node_modules
+.yarn/cache
+terraform
+
+# files
+.env*
+.gitattributes
+.gitignore
+.editorconfig
+.prettierignore
+.prettierrc
+docker-compose*.yaml
+*.md
