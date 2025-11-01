@@ -1,4 +1,4 @@
-name: puzzleon_api
+name: kalanah_api
 
 services:
   db:
@@ -6,7 +6,7 @@ services:
     restart: always
     command: ['postgres', '-c', 'log_statement=all']
     volumes:
-      - puzzleon_api:/var/lib/postgresql/data
+      - kalanah_api:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -16,4 +16,4 @@ services:
       - ${POSTGRES_PORT}:5432
 
 volumes:
-  puzzleon_api:
+  kalanah_api:

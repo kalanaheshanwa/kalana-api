@@ -1,7 +1,19 @@
 {
-    "cSpell.words": [
-        "kalanah",
-        "kalanasquare",
-        "tfstates"
-    ]
+  "cSpell.words": ["kalanah", "kalanasquare", "tfstates"],
+  "editor.formatOnSave": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "always"
+  },
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "yaml.schemas": {
+    "Kubernetes": ["/ci/kubernetes/**/*", "!/ci/kubernetes/common/values.yaml", "!/ci/kubernetes/common/issuer.yaml"],
+    "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": "docker-compose.yaml"
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "puzzleon",
+  "name": "kalanah",
   "packageManager": "yarn@4.10.3",
   "workspaces": [
     "./packages/**"

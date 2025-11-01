@@ -1,5 +1,5 @@
 {
-  "name": "@puzzleon/rest-api",
+  "name": "@kalanah/api",
   "private": true,
   "scripts": {
     "clean": "rimraf dist",
@@ -9,8 +9,8 @@
     "server:watch": "yarn load-vars nodemon dist/server.mjs",
     "build:watch": "tsc --watch --preserveWatchOutput --project tsconfig.json",
     "load-vars": "dotenv -e .env --",
-    "db:migrate": "prisma migrate dev --create-only",
-    "db:migrate:dev": "prisma migrate dev --skip-seed",
+    "db:migrate": "yarn load-vars prisma migrate dev --create-only",
+    "db:migrate:dev": "yarn load-vars prisma migrate dev --skip-seed",
     "db:push": "prisma db push",
     "db:deploy:prod": "dotenv -e .env.prod prisma migrate deploy",
     "db:seed": "prisma db seed",
@@ -21,9 +21,6 @@
     "infra:up": "yarn load-vars podman compose -f ./docker-compose.yaml up -d",
     "infra:up:build": "yarn load-vars podman compose -f ./docker-compose.yaml up --build -d",
     "infra:down": "yarn load-vars podman compose -f ./docker-compose.yaml down"
-  },
-  "prisma": {
-    "seed": "yarn load-vars tsx prisma/seed/seed.mts"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.0.0",
@@ -40,7 +37,7 @@
     "dotenv-cli": "^8.0.0",
     "nodemon": "^3.1.10",
     "pg": "^8.16.0",
-    "prisma": "^6.9.0",
+    "prisma": "^6.18.0",
     "rimraf": "^6.0.1",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
@@ -48,7 +45,7 @@
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.893.0",
     "@codegenie/serverless-express": "^4.17.0",
-    "@prisma/client": "^6.9.0",
+    "@prisma/client": "^6.18.0",
     "aws-jwt-verify": "^5.1.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
