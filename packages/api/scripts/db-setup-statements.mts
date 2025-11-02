@@ -1,11 +1,13 @@
-export const cleanupUserStatements: string[] = [/* SQL */ `DROP SCHEMA IF EXISTS ":APP_SCHEMA" CASCADE;`];
+export const cleanupUserStatements: string[] = [];
 
-export const cleanupAdminStatements: string[] = [
-  /* SQL */ `AWS IAM REVOKE ":APP_USER" FROM '":APP_AWS_DB_CONNECT_ROLE_ARN"';`,
-  /* SQL */ `AWS IAM REVOKE ":APP_OWNER" FROM '":APP_AWS_DB_CONNECT_ROLE_ARN"';`,
-];
+export const cleanupAdminStatements: string[] = [];
 
 export const adminStatements: string[] = [
+  /* SQL */ `DROP SCHEMA IF EXISTS ":APP_SCHEMA" CASCADE;`,
+
+  /* SQL */ `AWS IAM REVOKE ":APP_USER" FROM '":APP_AWS_DB_CONNECT_ROLE_ARN"';`,
+  /* SQL */ `AWS IAM REVOKE ":APP_OWNER" FROM '":APP_AWS_DB_CONNECT_ROLE_ARN"';`,
+
   /* SQL */ `DROP ROLE IF EXISTS ":APP_OWNER";`,
   /* SQL */ `CREATE ROLE ":APP_OWNER" WITH LOGIN;`,
   /* SQL */ `DROP ROLE IF EXISTS ":APP_USER";`,

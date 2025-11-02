@@ -2,12 +2,7 @@ import { fromIni, fromTemporaryCredentials } from '@aws-sdk/credential-providers
 import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import pg from 'pg';
 import { AppConfig } from './config.mjs';
-import {
-  adminStatements,
-  appUserStatements,
-  cleanupAdminStatements,
-  cleanupUserStatements,
-} from './db-setup-statements.mts';
+import { adminStatements, appUserStatements } from './db-setup-statements.mts';
 
 const { Client } = pg;
 
@@ -63,41 +58,15 @@ async function initDatabase() {
     database: config.postgresDb,
     ssl: useSsl,
   });
-  const appClient2 = new Client({
-    host: config.postgresHost,
-    port: config.postgresPort,
-    user: config.appOwner,
-    password: userPassword,
-    database: config.postgresDb,
-    ssl: useSsl,
-  });
 
   const isConnected: Record<string, boolean> = {};
 
   try {
-    // App client specific privileges
-    await appClient.connect();
-    isConnected['appClient'] = true;
-    console.log('Connected to app client.');
-    for (const st of cleanupUserStatements) {
-      console.log(st);
-      await appClient.query(replacePlaceholders(st, config));
-    }
-    console.log('Database initialized with necessary roles and permissions for app client.');
-    await appClient.end();
-    isConnected['appClient'] = false;
-    console.log('Disconnected from app client.');
-
     // Default schema creations and owner privileges for all clients
     console.log('Attempting to connect to defaultDb client...');
     await defaultDbClient.connect();
     isConnected['defaultDbClient'] = true;
     console.log('Connected to defaultDb client.');
-    for (const st of cleanupAdminStatements) {
-      console.log(st);
-      await defaultDbClient.query(replacePlaceholders(st, config));
-    }
-
     for (const st of adminStatements) {
       console.log(st);
       await defaultDbClient.query(replacePlaceholders(st, config));
@@ -108,15 +77,15 @@ async function initDatabase() {
     console.log('Disconnected from defaultDb client.');
 
     // App client specific privileges
-    await appClient2.connect();
+    await appClient.connect();
     isConnected['appClient2'] = true;
     console.log('Connected to app client.');
     for (const st of appUserStatements) {
       console.log(st);
-      await appClient2.query(replacePlaceholders(st, config));
+      await appClient.query(replacePlaceholders(st, config));
     }
     console.log('Database initialized with necessary roles and permissions for app client.');
-    await appClient2.end();
+    await appClient.end();
     isConnected['appClient2'] = false;
     console.log('Disconnected from app client.');
   } catch (error) {
@@ -128,11 +97,8 @@ async function initDatabase() {
     if (isConnected['defaultDbClient']) {
       await defaultDbClient.end();
     }
-    if (isConnected['appClient']) {
-      await appClient.end();
-    }
     if (isConnected['appClient2']) {
-      await appClient2.end();
+      await appClient.end();
     }
   }
 }
