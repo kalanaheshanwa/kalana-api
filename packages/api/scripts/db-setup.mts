@@ -1,13 +1,13 @@
 import { fromIni, fromTemporaryCredentials } from '@aws-sdk/credential-providers';
 import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import pg from 'pg';
-import { AppConfig } from './config.mjs';
+import { ConfigValue, getConfig } from './config.mjs';
 import { adminStatements, appUserStatements } from './db-setup-statements.mts';
 
 const { Client } = pg;
 
 async function initDatabase() {
-  const config = new AppConfig();
+  const config = getConfig();
 
   // 1) Base creds come from your SSO profile
   const baseCreds = fromIni({ profile: 'kalanah-dev' }); // your SSO profile
@@ -15,48 +15,47 @@ async function initDatabase() {
   const dbRoleCreds = fromTemporaryCredentials({
     masterCredentials: baseCreds,
     params: {
-      RoleArn: config.appAwsDbConnectRoleArn,
+      RoleArn: config.APP_AWS_DB_CONNECT_ROLE_ARN,
       RoleSessionName: 'db-init-local',
     },
   });
 
   const adminSigner = new DsqlSigner({
-    hostname: config.postgresHost,
+    hostname: config.POSTGRES_HOST,
     credentials: baseCreds,
   });
 
   const userSigner = new DsqlSigner({
-    hostname: config.postgresHost,
+    hostname: config.POSTGRES_HOST,
     credentials: dbRoleCreds,
   });
 
   // Enable TLS for non-local connections (e.g., Aurora DSQL)
-  const useSsl = config.postgresHost !== 'localhost';
   const adminPassword = await adminSigner.getDbConnectAdminAuthToken();
   const userPassword = await userSigner.getDbConnectAuthToken();
 
   const defaultClient = new Client({
-    host: config.postgresHost,
-    port: config.postgresPort,
-    user: config.postgresUser,
+    host: config.POSTGRES_HOST,
+    port: config.POSTGRES_PORT,
+    user: config.POSTGRES_USER,
     password: adminPassword,
-    ssl: useSsl,
+    ssl: true,
   });
   const defaultDbClient = new Client({
-    host: config.postgresHost,
-    port: config.postgresPort,
-    user: config.postgresUser,
+    host: config.POSTGRES_HOST,
+    port: config.POSTGRES_PORT,
+    user: config.POSTGRES_USER,
     password: adminPassword,
-    database: config.postgresDb,
-    ssl: useSsl,
+    database: config.POSTGRES_DB,
+    ssl: true,
   });
   const appClient = new Client({
-    host: config.postgresHost,
-    port: config.postgresPort,
-    user: config.appOwner,
+    host: config.POSTGRES_HOST,
+    port: config.POSTGRES_PORT,
+    user: config.APP_OWNER,
     password: userPassword,
-    database: config.postgresDb,
-    ssl: useSsl,
+    database: config.POSTGRES_DB,
+    ssl: true,
   });
 
   const isConnected: Record<string, boolean> = {};
@@ -103,10 +102,10 @@ async function initDatabase() {
   }
 }
 
-function replacePlaceholders(sql: string, values: AppConfig) {
+function replacePlaceholders(sql: string, values: ConfigValue) {
   let result = sql;
 
-  for (const [placeholder, value] of Object.entries(values.unmodifiedEnv)) {
+  for (const [placeholder, value] of Object.entries(values)) {
     result = result.replace(new RegExp(`":${placeholder}"`, 'g'), String(value));
   }
   return result;
