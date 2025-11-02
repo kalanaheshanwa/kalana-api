@@ -1,20 +1,10 @@
-import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import { z } from 'zod';
 
 export class AppConfig {
   private _env: ConfigValue;
-  private _generatedAdminToken: string | undefined;
-  private _generatedUserToken: string | undefined;
 
   constructor(variables: NodeJS.ProcessEnv = process.env) {
     this._env = schema.parse(variables);
-  }
-
-  async init() {
-    if (!this.isDev) {
-      await this._generateAdminToken();
-      await this._generateUserToken();
-    }
   }
 
   get unmodifiedEnv() {
@@ -56,15 +46,7 @@ export class AppConfig {
   }
 
   get postgresPassword() {
-    if (this.isDev) {
-      return this._env.POSTGRES_PASSWORD;
-    }
-
-    if (!this._generatedAdminToken) {
-      throw new Error('Please initiate config first');
-    }
-
-    return this._generatedAdminToken;
+    return this._env.POSTGRES_PASSWORD;
   }
 
   get appOwner() {
@@ -72,66 +54,11 @@ export class AppConfig {
   }
 
   get appOwnerPassword() {
-    if (this.isDev) {
-      return this._env.APP_OWNER_PASSWORD;
-    }
-
-    if (!this._generatedUserToken) {
-      throw new Error('Please initiate config first');
-    }
-
-    return this._generatedUserToken;
+    return this._env.APP_OWNER_PASSWORD;
   }
 
-  private async _generateAdminToken() {
-    if (this._generatedAdminToken) {
-      return this._generatedAdminToken;
-    }
-
-    const signer = new DsqlSigner({
-      hostname: this.postgresHost,
-      profile: 'kalanah-dev',
-    });
-
-    try {
-      const token = await signer.getDbConnectAdminAuthToken();
-      this._generatedAdminToken = token;
-      return token;
-    } catch (error) {
-      console.error('Failed to generate token: ', error);
-      throw error;
-    }
-  }
-
-  private async _generateUserToken() {
-    if (this._generatedUserToken) {
-      return this._generatedUserToken;
-    }
-
-    const signer = new DsqlSigner({
-      hostname: this.postgresHost,
-      profile: 'kalanah-dev',
-    });
-
-    try {
-      const token = await signer.getDbConnectAuthToken();
-      this._generatedUserToken = token;
-      return token;
-    } catch (error) {
-      console.error('Failed to generate token: ', error);
-      throw error;
-    }
-  }
-
-  private _buildPostgresConnStr(
-    includeDb: boolean = true,
-    user: string = this.postgresUser,
-    password: string = this.postgresPassword,
-    db: string = this.postgresDb,
-    port: number = this.postgresPort,
-    host: string = this.postgresHost,
-  ): string {
-    return `postgresql://${user}:${encodeURIComponent(password)}@${host}:${port}${includeDb ? `/${db}` : ''}`;
+  get appAwsDbConnectRoleArn() {
+    return this._env.APP_AWS_DB_CONNECT_ROLE_ARN;
   }
 }
 
@@ -149,6 +76,8 @@ const schema = z.object({
   APP_SCHEMA: z.string(),
   APP_USER: z.string(),
   APP_USER_PASSWORD: z.string(),
+
+  APP_AWS_DB_CONNECT_ROLE_ARN: z.string(),
 
   POSTGRES_DB_SHADOW: z.string(),
   SHADOW_OWNER: z.string(),

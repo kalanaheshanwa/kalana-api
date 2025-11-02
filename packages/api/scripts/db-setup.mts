@@ -1,36 +1,57 @@
-import fs from 'fs/promises';
-import { dirname } from 'path';
+import { fromIni, fromTemporaryCredentials } from '@aws-sdk/credential-providers';
+import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import pg from 'pg';
-import { fileURLToPath } from 'url';
 import { AppConfig } from './config.mjs';
+import {
+  adminStatements,
+  appUserStatements,
+  cleanupAdminStatements,
+  cleanupUserStatements,
+} from './db-setup-statements.mts';
 
-const DELAY = 1_000;
 const { Client } = pg;
 
 async function initDatabase() {
-  console.log('Initializing config...');
   const config = new AppConfig();
-  await config.init();
-  console.log('Config initialized successfully');
 
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
+  // 1) Base creds come from your SSO profile
+  const baseCreds = fromIni({ profile: 'kalanah-dev' }); // your SSO profile
+  // 2) Assume into the IAM role that you mapped to the DB role via `AWS IAM GRANT`
+  const dbRoleCreds = fromTemporaryCredentials({
+    masterCredentials: baseCreds,
+    params: {
+      RoleArn: config.appAwsDbConnectRoleArn,
+      RoleSessionName: 'db-init-local',
+    },
+  });
+
+  const adminSigner = new DsqlSigner({
+    hostname: config.postgresHost,
+    credentials: baseCreds,
+  });
+
+  const userSigner = new DsqlSigner({
+    hostname: config.postgresHost,
+    credentials: dbRoleCreds,
+  });
 
   // Enable TLS for non-local connections (e.g., Aurora DSQL)
   const useSsl = config.postgresHost !== 'localhost';
+  const adminPassword = await adminSigner.getDbConnectAdminAuthToken();
+  const userPassword = await userSigner.getDbConnectAuthToken();
 
   const defaultClient = new Client({
     host: config.postgresHost,
     port: config.postgresPort,
     user: config.postgresUser,
-    password: config.postgresPassword,
+    password: adminPassword,
     ssl: useSsl,
   });
   const defaultDbClient = new Client({
     host: config.postgresHost,
     port: config.postgresPort,
     user: config.postgresUser,
-    password: config.postgresPassword,
+    password: adminPassword,
     database: config.postgresDb,
     ssl: useSsl,
   });
@@ -38,87 +59,65 @@ async function initDatabase() {
     host: config.postgresHost,
     port: config.postgresPort,
     user: config.appOwner,
-    password: config.appOwnerPassword,
+    password: userPassword,
     database: config.postgresDb,
     ssl: useSsl,
   });
-  const shadowClient = new Client({
+  const appClient2 = new Client({
     host: config.postgresHost,
     port: config.postgresPort,
-    user: config.postgresUser,
-    password: config.postgresPassword,
-    database: config.postgresDbShadow,
+    user: config.appOwner,
+    password: userPassword,
+    database: config.postgresDb,
     ssl: useSsl,
   });
 
   const isConnected: Record<string, boolean> = {};
 
   try {
-    if (config.isDev) {
-      console.log('Attempting to connect to default client...');
-      await defaultClient.connect();
-      isConnected['defaultClient'] = true;
-      console.log('Connected to default client.');
-
-      // Creating database
-      await defaultClient.query(`DROP DATABASE IF EXISTS ${config.postgresDb};`);
-      console.log(`Database ${config.postgresDb} dropped.`);
-      await defaultClient.query(`CREATE DATABASE ${config.postgresDb}`);
-      console.log(`Database ${config.postgresDb} created.`);
-      // Creating shadow database
-      await defaultClient.query(`DROP DATABASE IF EXISTS ${config.postgresDbShadow};`);
-      console.log(`Database ${config.postgresDbShadow} dropped.`);
-      await defaultClient.query(`CREATE DATABASE ${config.postgresDbShadow}`);
-      console.log(`Database ${config.postgresDbShadow} created.`);
-
-      await defaultClient.end();
-      isConnected['defaultClient'] = false;
-      console.log('Disconnected from default client.');
-
-      // Shadow setup
-      const shadowSql = await fs.readFile(`${__dirname}/db-shadow-setup.sql`, 'utf-8');
-      const parsedShadowSql = replacePlaceholders(shadowSql, config);
-
-      await shadowClient.connect();
-      isConnected['shadowClient'] = true;
-      console.log(`Connected to shadow client.`);
-      await shadowClient.query(parsedShadowSql);
-      console.log('Database initialized with necessary roles and permissions for shadow client.');
-      await shadowClient.end();
-      isConnected['shadowClient'] = false;
-      console.log(`Disconnected from shadow client.`);
+    // App client specific privileges
+    await appClient.connect();
+    isConnected['appClient'] = true;
+    console.log('Connected to app client.');
+    for (const st of cleanupUserStatements) {
+      console.log(st);
+      await appClient.query(replacePlaceholders(st, config));
     }
+    console.log('Database initialized with necessary roles and permissions for app client.');
+    await appClient.end();
+    isConnected['appClient'] = false;
+    console.log('Disconnected from app client.');
 
     // Default schema creations and owner privileges for all clients
-    const defaultSql = await fs.readFile(`${__dirname}/db-setup.sql`, 'utf-8');
-    const parsedDefaultSql = replacePlaceholders(defaultSql, config);
-
     console.log('Attempting to connect to defaultDb client...');
     await defaultDbClient.connect();
     isConnected['defaultDbClient'] = true;
     console.log('Connected to defaultDb client.');
-    await delay(config);
-    await defaultDbClient.query(parsedDefaultSql);
+    for (const st of cleanupAdminStatements) {
+      console.log(st);
+      await defaultDbClient.query(replacePlaceholders(st, config));
+    }
+
+    for (const st of adminStatements) {
+      console.log(st);
+      await defaultDbClient.query(replacePlaceholders(st, config));
+    }
     console.log('Database initialized with necessary roles and permissions for defaultDb client.');
-    await delay(config);
     await defaultDbClient.end();
     isConnected['defaultDbClient'] = false;
     console.log('Disconnected from defaultDb client.');
 
     // App client specific privileges
-    const appSql = await fs.readFile(`${__dirname}/db-app-setup.sql`, 'utf-8');
-    const parsedAppSql = replacePlaceholders(appSql, config);
-
-    await delay(config);
-    await appClient.connect();
-    isConnected['appClient'] = true;
+    await appClient2.connect();
+    isConnected['appClient2'] = true;
     console.log('Connected to app client.');
-    await delay(config);
-    await appClient.query(parsedAppSql);
+    for (const st of appUserStatements) {
+      console.log(st);
+      await appClient2.query(replacePlaceholders(st, config));
+    }
     console.log('Database initialized with necessary roles and permissions for app client.');
-    await delay(config);
-    await appClient.end();
-    isConnected['appClient'] = false;
+    await appClient2.end();
+    isConnected['appClient2'] = false;
     console.log('Disconnected from app client.');
   } catch (error) {
     console.log(error);
@@ -132,8 +131,8 @@ async function initDatabase() {
     if (isConnected['appClient']) {
       await appClient.end();
     }
-    if (isConnected['shadowClient']) {
-      await shadowClient.end();
+    if (isConnected['appClient2']) {
+      await appClient2.end();
     }
   }
 }
@@ -145,23 +144,6 @@ function replacePlaceholders(sql: string, values: AppConfig) {
     result = result.replace(new RegExp(`":${placeholder}"`, 'g'), String(value));
   }
   return result;
-}
-
-/**
- * Delays the execution of code for a specified number of milliseconds.
- *
- * @param ms - The number of milliseconds to delay.
- * @returns A Promise that resolves after the specified delay.
- */
-function delay(config: AppConfig, ms: number = DELAY): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(
-      () => {
-        resolve();
-      },
-      config.isDev ? 0 : ms,
-    );
-  });
 }
 
 initDatabase().catch((error) => {
