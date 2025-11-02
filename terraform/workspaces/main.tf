@@ -39,4 +39,6 @@ module "cloudfront" {
 
 module "dsql" {
   source = "./modules/dsql"
+
+  env = var.env
 }

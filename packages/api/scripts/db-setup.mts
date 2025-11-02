@@ -8,27 +8,54 @@ const DELAY = 1_000;
 const { Client } = pg;
 
 async function initDatabase() {
+  console.log('Initializing config...');
   const config = new AppConfig();
+  await config.init();
+  console.log('Config initialized successfully');
+
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
 
+  // Enable TLS for non-local connections (e.g., Aurora DSQL)
+  const useSsl = config.postgresHost !== 'localhost';
+
   const defaultClient = new Client({
-    connectionString: config.dbServerUrl,
+    host: config.postgresHost,
+    port: config.postgresPort,
+    user: config.postgresUser,
+    password: config.postgresPassword,
+    ssl: useSsl,
   });
   const defaultDbClient = new Client({
-    connectionString: config.dbUrl,
+    host: config.postgresHost,
+    port: config.postgresPort,
+    user: config.postgresUser,
+    password: config.postgresPassword,
+    database: config.postgresDb,
+    ssl: useSsl,
   });
   const appClient = new Client({
-    connectionString: config.appDbUrl,
+    host: config.postgresHost,
+    port: config.postgresPort,
+    user: config.appOwner,
+    password: config.appOwnerPassword,
+    database: config.postgresDb,
+    ssl: useSsl,
   });
   const shadowClient = new Client({
-    connectionString: config.shadowDbUrl,
+    host: config.postgresHost,
+    port: config.postgresPort,
+    user: config.postgresUser,
+    password: config.postgresPassword,
+    database: config.postgresDbShadow,
+    ssl: useSsl,
   });
 
   const isConnected: Record<string, boolean> = {};
 
   try {
     if (config.isDev) {
+      console.log('Attempting to connect to default client...');
       await defaultClient.connect();
       isConnected['defaultClient'] = true;
       console.log('Connected to default client.');
@@ -66,6 +93,7 @@ async function initDatabase() {
     const defaultSql = await fs.readFile(`${__dirname}/db-setup.sql`, 'utf-8');
     const parsedDefaultSql = replacePlaceholders(defaultSql, config);
 
+    console.log('Attempting to connect to defaultDb client...');
     await defaultDbClient.connect();
     isConnected['defaultDbClient'] = true;
     console.log('Connected to defaultDb client.');

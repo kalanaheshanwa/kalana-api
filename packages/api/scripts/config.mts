@@ -1,10 +1,20 @@
+import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import { z } from 'zod';
 
 export class AppConfig {
   private _env: ConfigValue;
+  private _generatedAdminToken: string | undefined;
+  private _generatedUserToken: string | undefined;
 
   constructor(variables: NodeJS.ProcessEnv = process.env) {
     this._env = schema.parse(variables);
+  }
+
+  async init() {
+    if (!this.isDev) {
+      await this._generateAdminToken();
+      await this._generateUserToken();
+    }
   }
 
   get unmodifiedEnv() {
@@ -46,7 +56,15 @@ export class AppConfig {
   }
 
   get postgresPassword() {
-    return this._env.POSTGRES_PASSWORD;
+    if (this.isDev) {
+      return this._env.POSTGRES_PASSWORD;
+    }
+
+    if (!this._generatedAdminToken) {
+      throw new Error('Please initiate config first');
+    }
+
+    return this._generatedAdminToken;
   }
 
   get appOwner() {
@@ -54,23 +72,55 @@ export class AppConfig {
   }
 
   get appOwnerPassword() {
-    return this._env.APP_OWNER_PASSWORD;
+    if (this.isDev) {
+      return this._env.APP_OWNER_PASSWORD;
+    }
+
+    if (!this._generatedUserToken) {
+      throw new Error('Please initiate config first');
+    }
+
+    return this._generatedUserToken;
   }
 
-  get dbServerUrl() {
-    return this._buildPostgresConnStr(false);
+  private async _generateAdminToken() {
+    if (this._generatedAdminToken) {
+      return this._generatedAdminToken;
+    }
+
+    const signer = new DsqlSigner({
+      hostname: this.postgresHost,
+      profile: 'kalanah-dev',
+    });
+
+    try {
+      const token = await signer.getDbConnectAdminAuthToken();
+      this._generatedAdminToken = token;
+      return token;
+    } catch (error) {
+      console.error('Failed to generate token: ', error);
+      throw error;
+    }
   }
 
-  get dbUrl() {
-    return this._buildPostgresConnStr();
-  }
+  private async _generateUserToken() {
+    if (this._generatedUserToken) {
+      return this._generatedUserToken;
+    }
 
-  get shadowDbUrl() {
-    return this._buildPostgresConnStr(true, this.postgresUser, this.postgresPassword, this.postgresDbShadow);
-  }
+    const signer = new DsqlSigner({
+      hostname: this.postgresHost,
+      profile: 'kalanah-dev',
+    });
 
-  get appDbUrl() {
-    return this._buildPostgresConnStr(true, this.appOwner, this.appOwnerPassword);
+    try {
+      const token = await signer.getDbConnectAuthToken();
+      this._generatedUserToken = token;
+      return token;
+    } catch (error) {
+      console.error('Failed to generate token: ', error);
+      throw error;
+    }
   }
 
   private _buildPostgresConnStr(
