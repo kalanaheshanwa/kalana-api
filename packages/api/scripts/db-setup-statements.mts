@@ -1,7 +1,3 @@
-export const cleanupUserStatements: string[] = [];
-
-export const cleanupAdminStatements: string[] = [];
-
 export const adminStatements: string[] = [
   /* SQL */ `DROP SCHEMA IF EXISTS ":APP_SCHEMA" CASCADE;`,
 

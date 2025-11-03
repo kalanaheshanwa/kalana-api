@@ -16,6 +16,8 @@ const schema = z.object({
   APP_USER_PASSWORD: z.string(),
 
   APP_AWS_DB_CONNECT_ROLE_ARN: z.string(),
+  APP_AWS_DB_REGION: z.string(),
+  APP_AWS_PROFILE: z.string(),
 
   POSTGRES_DB_SHADOW: z.string(),
   SHADOW_OWNER: z.string(),
