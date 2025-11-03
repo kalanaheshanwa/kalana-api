@@ -1,8 +1,9 @@
 import { fromIni, fromTemporaryCredentials } from '@aws-sdk/credential-providers';
 import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import pg from 'pg';
-import { ConfigValue, getConfig } from './config.mjs';
-import { adminStatements, appUserStatements } from './db-setup-statements.mts';
+import { getConfig } from './config.mjs';
+import { adminStatements, appUserStatements } from './statements.mts';
+import { replacePlaceholders } from './utils.mts';
 
 const { Client } = pg;
 
@@ -34,13 +35,6 @@ async function initDatabase() {
   const adminPassword = await adminSigner.getDbConnectAdminAuthToken();
   const userPassword = await userSigner.getDbConnectAuthToken();
 
-  const defaultClient = new Client({
-    host: config.POSTGRES_HOST,
-    port: config.POSTGRES_PORT,
-    user: config.POSTGRES_USER,
-    password: adminPassword,
-    ssl: true,
-  });
   const defaultDbClient = new Client({
     host: config.POSTGRES_HOST,
     port: config.POSTGRES_PORT,
@@ -77,7 +71,7 @@ async function initDatabase() {
 
     // App client specific privileges
     await appClient.connect();
-    isConnected['appClient2'] = true;
+    isConnected['appClient'] = true;
     console.log('Connected to app client.');
     for (const st of appUserStatements) {
       console.log(st);
@@ -85,30 +79,18 @@ async function initDatabase() {
     }
     console.log('Database initialized with necessary roles and permissions for app client.');
     await appClient.end();
-    isConnected['appClient2'] = false;
+    isConnected['appClient'] = false;
     console.log('Disconnected from app client.');
   } catch (error) {
     console.log(error);
   } finally {
-    if (isConnected['defaultClient']) {
-      await defaultClient.end();
-    }
     if (isConnected['defaultDbClient']) {
       await defaultDbClient.end();
     }
-    if (isConnected['appClient2']) {
+    if (isConnected['appClient']) {
       await appClient.end();
     }
   }
-}
-
-function replacePlaceholders(sql: string, values: ConfigValue) {
-  let result = sql;
-
-  for (const [placeholder, value] of Object.entries(values)) {
-    result = result.replace(new RegExp(`":${placeholder}"`, 'g'), String(value));
-  }
-  return result;
 }
 
 initDatabase().catch((error) => {

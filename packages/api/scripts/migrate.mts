@@ -9,8 +9,16 @@ const sh = promisify(execFile);
 
 type Mode = { type: 'ssoAssume'; profile: string; region: string; roleArn: string }; // Local: SSO -> assume DB IAM role
 
-function pgUrl(u: { host: string; user: string; db: string; schema: string; token: string }) {
-  return `postgresql://${encodeURIComponent(u.user)}:${encodeURIComponent(u.token)}@${u.host}:5432/${encodeURIComponent(u.db)}?schema=${u.schema}&sslmode=require`;
+function pgUrl(u: {
+  host: string;
+  port: number;
+  user: string;
+  db: string;
+  schema: string;
+  token: string;
+  ssl: boolean;
+}) {
+  return `postgresql://${encodeURIComponent(u.user)}:${encodeURIComponent(u.token)}@${u.host}:${u.port}/${encodeURIComponent(u.db)}?schema=${u.schema}${u.ssl ? '&sslmode=require' : ''}`;
 }
 
 async function getAwsCreds(mode: Mode) {
@@ -44,10 +52,12 @@ async function main() {
   });
   const DATABASE_URL = pgUrl({
     host: config.POSTGRES_HOST,
+    port: config.POSTGRES_PORT,
     user: config.APP_OWNER,
     db: config.POSTGRES_DB,
     schema: config.APP_SCHEMA,
     token,
+    ssl: true,
   });
 
   const prismaArgs = (() => {
@@ -67,13 +77,7 @@ async function main() {
     }
   })();
 
-  // pass-through args after "--"
-  const dd = process.argv.indexOf('--');
-  if (dd !== -1) {
-    prismaArgs.push(...process.argv.slice(dd + 1));
-  }
-
-  console.log(`→ Running: npx ${prismaArgs.join(' ')}`);
+  console.log(`Running: yarn exec ${prismaArgs.join(' ')}`);
   await sh('yarn', ['exec', ...prismaArgs], {
     env: {
       ...process.env,
@@ -81,6 +85,7 @@ async function main() {
     },
     shell: true,
   });
+  console.log('Migrations applied');
 }
 
 main().catch((e) => {
