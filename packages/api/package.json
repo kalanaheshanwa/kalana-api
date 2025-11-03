@@ -16,13 +16,16 @@
     "db:deploy:prod": "dotenv -e .env.prod -- tsx scripts/migrate.mts deploy",
     "db:seed": "prisma db seed",
     "db:reset": "prisma migrate reset --skip-seed",
-    "db:types": "prisma generate",
+    "db:types": "yarn load-vars prisma generate",
     "db:init": "yarn load-vars tsx scripts/db-setup-local.mts",
     "db:init:dev": "dotenv -e .env.dev -- tsx scripts/db-setup.mts",
     "db:init:prod": "dotenv -e .env.prod -- tsx scripts/db-setup.mts",
     "infra:up": "yarn load-vars podman compose -f ./docker-compose.yaml up -d",
     "infra:up:build": "yarn load-vars podman compose -f ./docker-compose.yaml up --build -d",
     "infra:down": "yarn load-vars podman compose -f ./docker-compose.yaml down"
+  },
+  "imports": {
+    "#prisma/client": "./generated/prisma/index.js"
   },
   "devDependencies": {
     "@aws-sdk/credential-providers": "^3.922.0",
@@ -54,6 +57,7 @@
     "aws-jwt-verify": "^5.1.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
+    "exponential-backoff": "^3.1.3",
     "express": "^5.1.0",
     "libphonenumber-js": "^1.12.9",
     "lodash": "^4.17.21",
