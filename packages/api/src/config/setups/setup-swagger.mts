@@ -2,6 +2,7 @@ import { Router } from 'express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { AppContext } from '../../types/index.mjs';
+import ContactSubmission from './contact-submission.schema.json' with { type: 'json' };
 
 const router = Router({ strict: true });
 
@@ -14,7 +15,9 @@ export function setupSwagger({ config }: AppContext) {
         version: '1.0.0',
       },
       components: {
-        schemas: {},
+        schemas: {
+          ContactSubmission,
+        },
         securitySchemes: {
           bearerAuth: {
             type: 'http',

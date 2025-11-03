@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "name": { "type": "string", "example": "Coffee Girl" },
+    "email": { "type": "string", "example": "hello@kalanasquare.space" },
+    "subject": {
+      "type": "string",
+      "example": "Need a new website"
+    },
+    "message": {
+      "type": "string",
+      "example": "This is a very lonely girl who is drinking a coffee alone and her mind is in somewhere else"
+    }
+  },
+  "required": ["name", "email", "subject", "message"]
+}
