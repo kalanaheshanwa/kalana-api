@@ -1,7 +1,7 @@
 import { fromIni, fromTemporaryCredentials } from '@aws-sdk/credential-providers';
 import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import pg from 'pg';
-import { getConfig } from './config.mjs';
+import { getConfig } from './config.mts';
 import { adminStatements, appUserStatements } from './statements.mts';
 import { replacePlaceholders } from './utils.mts';
 
@@ -24,11 +24,13 @@ async function initDatabase() {
   const adminSigner = new DsqlSigner({
     hostname: config.POSTGRES_HOST,
     credentials: baseCreds,
+    region: config.APP_AWS_DB_REGION,
   });
 
   const userSigner = new DsqlSigner({
     hostname: config.POSTGRES_HOST,
     credentials: dbRoleCreds,
+    region: config.APP_AWS_DB_REGION,
   });
 
   // Enable TLS for non-local connections (e.g., Aurora DSQL)

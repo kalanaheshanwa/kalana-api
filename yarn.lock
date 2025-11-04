@@ -4812,6 +4812,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prisma-client-adab351dffa3f86e032f714e0c08ac8b33ccca0de9fb92dc8deb1663f99bab09@workspace:packages/api/generated/prisma":
+  version: 0.0.0-use.local
+  resolution: "prisma-client-adab351dffa3f86e032f714e0c08ac8b33ccca0de9fb92dc8deb1663f99bab09@workspace:packages/api/generated/prisma"
+  languageName: unknown
+  linkType: soft
+
 "prisma@npm:^6.18.0":
   version: 6.18.0
   resolution: "prisma@npm:6.18.0"

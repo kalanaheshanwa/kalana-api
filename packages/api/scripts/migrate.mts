@@ -18,6 +18,10 @@ function pgUrl(u: {
   token: string;
   ssl: boolean;
 }) {
+  console.log(
+    'PG URL:',
+    `postgresql://${encodeURIComponent(u.user)}:<token>@${u.host}:${u.port}/${encodeURIComponent(u.db)}?schema=${u.schema}${u.ssl ? '&sslmode=require' : ''}`,
+  );
   return `postgresql://${encodeURIComponent(u.user)}:${encodeURIComponent(u.token)}@${u.host}:${u.port}/${encodeURIComponent(u.db)}?schema=${u.schema}${u.ssl ? '&sslmode=require' : ''}`;
 }
 
@@ -64,14 +68,8 @@ async function main() {
     switch (cmd) {
       case 'deploy':
         return ['prisma', 'migrate', 'deploy'];
-      case 'dev':
-        return ['prisma', 'migrate', 'dev', '--skip-seed'];
-      case 'push':
-        return ['prisma', 'db', 'push'];
       case 'status':
         return ['prisma', 'migrate', 'status'];
-      case 'reset':
-        return ['prisma', 'migrate', 'reset', '--skip-seed'];
       default:
         throw new Error(`Unknown command: ${cmd}`);
     }
