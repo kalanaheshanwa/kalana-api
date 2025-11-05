@@ -19,23 +19,8 @@ const baseSchema = z.object({
   APP_AWS_PROFILE: z.string(),
 });
 
-const devSchema = baseSchema.extend({
-  POSTGRES_PASSWORD: z.string(),
-  POSTGRES_DB_SHADOW: z.string(),
-  SHADOW_OWNER: z.string(),
-  SHADOW_OWNER_PASSWORD: z.string(),
-});
-
 export function getConfig(): ConfigValue {
   const parsed = baseSchema.parse(process.env);
-  return {
-    ...parsed,
-    IS_DEV: parsed.NODE_ENV === 'development',
-  };
-}
-
-export function getDevConfig(): DevConfigValue {
-  const parsed = devSchema.parse(process.env);
   return {
     ...parsed,
     IS_DEV: parsed.NODE_ENV === 'development',
@@ -47,4 +32,3 @@ interface ComputedConfig {
 }
 
 export type ConfigValue = z.infer<typeof baseSchema> & ComputedConfig;
-export type DevConfigValue = z.infer<typeof devSchema> & ComputedConfig;

@@ -41,8 +41,14 @@ async function signToken(host: string, mode: Mode) {
 
 async function main() {
   const cmd = process.argv[2]; // deploy | dev | push | status | reset
+  const migrationName = process.argv[3];
+
   if (!cmd) {
     console.error('Usage: prisma-run <deploy|dev|push|status|reset> [-- ...pass-through]');
+    process.exit(1);
+  }
+  if (['applied', 'rolled-back'].includes(cmd) && !migrationName) {
+    console.error('Migration name required for this operation');
     process.exit(1);
   }
 
@@ -70,6 +76,8 @@ async function main() {
         return ['prisma', 'migrate', 'deploy'];
       case 'status':
         return ['prisma', 'migrate', 'status'];
+      case 'applied':
+        return ['prisma', 'migrate', 'resolve', '--applied', migrationName];
       default:
         throw new Error(`Unknown command: ${cmd}`);
     }
