@@ -8,6 +8,10 @@ module "oidc" {
   source = "./modules/oidc"
 
   project_namespace = var.project_namespace
-  github_owner = var.github_owner
-  github_repo = var.github_repo
+  github_owner      = var.github_owner
+  github_repo       = var.github_repo
+}
+
+module "dsql" {
+  source = "./modules/dsql"
 }
