@@ -1,4 +1,4 @@
-import { ConfigValue } from './config.mts';
+import { ConfigValue } from '../../config.mts';
 
 export function replacePlaceholders(sql: string, values: ConfigValue) {
   let result = sql;

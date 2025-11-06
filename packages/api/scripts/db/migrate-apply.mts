@@ -3,8 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { Client } from 'pg';
 import { getConfig } from '../config.mts';
-import { newClient, quoteIdent, sha256 } from '../libs/dsql.mts';
-import { splitSQL } from '../libs/split-sql.mjs';
+import { newClient, quoteIdent, sha256, splitSQL } from './libs/index.mjs';
 
 const config = getConfig();
 

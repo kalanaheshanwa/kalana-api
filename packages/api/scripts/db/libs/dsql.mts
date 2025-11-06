@@ -2,7 +2,7 @@ import { fromIni, fromTemporaryCredentials } from '@aws-sdk/credential-providers
 import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import { createHash } from 'node:crypto';
 import { Client } from 'pg';
-import { ConfigValue } from '../config.mts';
+import { ConfigValue } from '../../config.mts';
 
 export type CredentialMode =
   | { type: 'env' }
