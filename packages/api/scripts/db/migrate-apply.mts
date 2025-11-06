@@ -22,9 +22,9 @@ function listMigrations() {
 async function ensureMigrationsTable(client: Client) {
   await client.query(/* SQL */ `
     CREATE TABLE IF NOT EXISTS ${MIG_TABLE} (
-      id text PRIMARY KEY,
-      applied_at timestamptz NOT NULL DEFAULT now(),
-      checksum text NOT NULL
+      id TEXT PRIMARY KEY,
+      applied_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      checksum TEXT NOT NULL
     )
   `);
 }
@@ -51,18 +51,7 @@ async function applyFile(client: Client, id: string, filePath: string) {
 }
 
 (async () => {
-  const client = await newClient({
-    region: config.APP_AWS_DB_REGION,
-    host: config.POSTGRES_HOST,
-    port: config.POSTGRES_PORT,
-    database: config.POSTGRES_DB,
-    dbUser: config.APP_OWNER, // connect as app_owner (owns schema)
-    credentials: {
-      type: 'ssoAssume',
-      profile: config.APP_AWS_PROFILE,
-      roleArn: config.APP_AWS_DB_CONNECT_ROLE_ARN,
-    },
-  });
+  const client = await newClient(config, 'owner');
 
   try {
     await client.query(/* SQL */ `SET search_path TO ${schemaQ}`);
@@ -87,6 +76,8 @@ async function applyFile(client: Client, id: string, filePath: string) {
   } finally {
     await client.end();
   }
+
+  await import('./migrate-grant.mts');
 })().catch((e) => {
   console.error(e);
   process.exit(1);

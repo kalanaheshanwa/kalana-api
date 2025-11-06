@@ -15,7 +15,7 @@
     "db:apply:dev": "dotenv -e .env.dev -- tsx scripts/db/migrate-apply.mts",
     "db:apply:prod": "dotenv -e .env.prod -- tsx scripts/db/migrate-apply.mts",
     "db:seed": "yarn load-vars prisma db seed",
-    "db:reset": "yarn load-vars prisma migrate reset --skip-seed",
+    "db:reset": "yarn load-vars tsx scripts/db/migrate-reset.mts --yes",
     "db:types": "yarn load-vars prisma generate",
     "db:init": "yarn load-vars tsx scripts/db-setup.mts",
     "db:init:dev": "dotenv -e .env.dev -- tsx scripts/db-setup.mts",
@@ -23,9 +23,6 @@
     "infra:up": "yarn load-vars podman compose -f ./docker-compose.yaml up -d",
     "infra:up:build": "yarn load-vars podman compose -f ./docker-compose.yaml up --build -d",
     "infra:down": "yarn load-vars podman compose -f ./docker-compose.yaml down"
-  },
-  "imports": {
-    "#prisma/client": "./generated/prisma/index.js"
   },
   "devDependencies": {
     "@aws-sdk/credential-providers": "^3.922.0",
@@ -44,7 +41,6 @@
     "dotenv-cli": "^8.0.0",
     "nodemon": "^3.1.10",
     "pg": "^8.16.0",
-    "prisma": "^6.18.0",
     "rimraf": "^6.0.1",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
@@ -53,7 +49,6 @@
     "@aws-sdk/client-sqs": "^3.893.0",
     "@aws-sdk/dsql-signer": "^3.922.0",
     "@codegenie/serverless-express": "^4.17.0",
-    "@prisma/client": "^6.18.0",
     "aws-jwt-verify": "^5.1.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
