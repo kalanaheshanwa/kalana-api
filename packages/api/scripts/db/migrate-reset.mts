@@ -14,8 +14,8 @@ const statements: string[] = [
   // drop & recreate schema owned by app_owner
   /* SQL */ `DROP SCHEMA IF EXISTS ${schemaQ} CASCADE`,
   /* SQL */ `CREATE SCHEMA ${schemaQ} AUTHORIZATION ${ownerQ}`,
-  // drop membership again (principle of least privilege)
-  /* SQL */ `REVOKE ${ownerQ} FROM ${adminQ}`,
+  // drop membership again (principle of least privilege), - NOTE: dropping this will loose DBeaver reads/writes - because DBeaver can only connect using admin
+  // /* SQL */ `REVOKE ${ownerQ} FROM ${adminQ}`,
 ];
 
 (async () => {
