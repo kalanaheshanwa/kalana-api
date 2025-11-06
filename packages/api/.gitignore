@@ -1,3 +1,4 @@
 *.example.json
 
-generated
+generated/*
+!generated/zapatos
