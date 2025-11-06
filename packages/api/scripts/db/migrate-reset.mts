@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 import { getConfig } from '../config.mts';
-import { newClient, quoteIdent } from './libs/index.mjs';
+import { newClient, quoteIdent } from './libs/index.mts';
 
 const config = getConfig();
 

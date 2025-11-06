@@ -1101,6 +1101,7 @@ __metadata:
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
     winston: "npm:^3.17.0"
+    zapatos: "npm:^6.6.1"
     zod: "npm:^3.25.64"
   languageName: unknown
   linkType: soft
@@ -3713,6 +3714,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"json-custom-numbers@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "json-custom-numbers@npm:3.1.1"
+  checksum: 10c0/d019a13307a3729504c336dea62b0c24aca322d9a696e663c3c467fc90838982bdd5c411990c49cd4ab1aa1943dd3612b0e45922c0daf6c81b4430f3400b1795
+  languageName: node
+  linkType: hard
+
 "json-schema-traverse@npm:^0.4.1":
   version: 0.4.1
   resolution: "json-schema-traverse@npm:0.4.1"
@@ -4539,12 +4547,6 @@ __metadata:
   checksum: 10c0/488cb2f2b99ec13da1e50074912870217c11edaddedeadc649b1244c749d15ba94e846423d062e2c4c9ae683e2d65f754de28889ba06e697ac4f988d44f45812
   languageName: node
   linkType: hard
-
-"prisma-client-adab351dffa3f86e032f714e0c08ac8b33ccca0de9fb92dc8deb1663f99bab09@workspace:packages/api/generated/prisma":
-  version: 0.0.0-use.local
-  resolution: "prisma-client-adab351dffa3f86e032f714e0c08ac8b33ccca0de9fb92dc8deb1663f99bab09@workspace:packages/api/generated/prisma"
-  languageName: unknown
-  linkType: soft
 
 "proc-log@npm:^5.0.0":
   version: 5.0.0
@@ -5576,6 +5578,21 @@ __metadata:
   bin:
     z-schema: bin/z-schema
   checksum: 10c0/e4c812cfe6468c19b2a21d07d4ff8fb70359062d33400b45f89017eaa3efe9d51e85963f2b115eaaa99a16b451782249bf9b1fa8b31d35cc473e7becb3e44264
+  languageName: node
+  linkType: hard
+
+"zapatos@npm:^6.6.1":
+  version: 6.6.1
+  resolution: "zapatos@npm:6.6.1"
+  dependencies:
+    json-custom-numbers: "npm:^3.1.1"
+  peerDependencies:
+    "@types/pg": ">=7.14.3"
+    pg: ">=7.18.2"
+    typescript: ">=4.1"
+  bin:
+    zapatos: dist/generate/cli.js
+  checksum: 10c0/3062a4923855a9619aa71eacd1f964b50f1a9528994550aa82256658ce2d1798ac4766b12475bb1066dcec9f3dfcabe7f229de4f66f67cfa4e1e29f3a438b4b2
   languageName: node
   linkType: hard
 

@@ -16,7 +16,7 @@
     "db:apply:prod": "dotenv -e .env.prod -- tsx scripts/db/migrate-apply.mts",
     "db:seed": "yarn load-vars prisma db seed",
     "db:reset": "yarn load-vars tsx scripts/db/migrate-reset.mts --yes",
-    "db:types": "yarn load-vars prisma generate",
+    "db:types": "yarn load-vars tsx scripts/db/zapatos.mts",
     "db:init": "yarn load-vars tsx scripts/db-setup.mts",
     "db:init:dev": "dotenv -e .env.dev -- tsx scripts/db-setup.mts",
     "db:init:prod": "dotenv -e .env.prod -- tsx scripts/db-setup.mts",
@@ -60,6 +60,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "winston": "^3.17.0",
+    "zapatos": "^6.6.1",
     "zod": "^3.25.64"
   }
 }

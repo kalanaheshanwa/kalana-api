@@ -1,3 +1,3 @@
-export * from './dsql.mjs';
-export * from './split-sql.mjs';
-export * from './utils.mjs';
+export * from './dsql.mts';
+export * from './split-sql.mts';
+export * from './utils.mts';
