@@ -4,9 +4,15 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "resolveJsonModule": true,
+    "paths": {
+      "zapatos/schema": [
+        "./generated/zapatos/schema"
+      ]
+    }
   },
   "include": [
-    "src"
+    "src",
+    "generated/zapatos/schema.d.ts"
   ],
   "exclude": [
     "node_modules",

@@ -22,6 +22,8 @@ manually. `packages/notify` is reserved for messaging workloads, while `terrafor
 All migration scripts are custom written for this project only. Because, there were no any useful working migration tool
 with Aurora DSQL support. Zapatos is used by the app to interact with the database.
 
+For local development, use `src/server.mts` to start a dev server. When hosted on lambda it will use `src/handler.mts`.
+
 ## Coding Style & Naming Conventions
 
 The repository enforces ESLint 9 with the Stylistic plugin and Prettier-in-ESLint; run `yarn lint` before committing.

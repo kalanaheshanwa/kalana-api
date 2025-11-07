@@ -17,1196 +17,1195 @@ declare module 'zapatos/schema' {
 
   /* === schema: app_public === */
 
-  export namespace app_public {
-  
-    /* --- enums --- */
-    /* (none) */
-  
-    /* --- tables --- */
-  
-    /**
-     * **app_public.blog_categories**
-     * - Table in database
-     */
-    export namespace blog_categories {
-      export type Table = 'app_public.blog_categories';
-      export interface Selectable {
-        /**
-        * **app_public.blog_categories.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt: Date;
-        /**
-        * **app_public.blog_categories.description**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        description: string;
-        /**
-        * **app_public.blog_categories.id**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        id: string;
-        /**
-        * **app_public.blog_categories.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: Date;
-      }
-      export interface JSONSelectable {
-        /**
-        * **app_public.blog_categories.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt: db.TimestampTzString;
-        /**
-        * **app_public.blog_categories.description**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        description: string;
-        /**
-        * **app_public.blog_categories.id**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        id: string;
-        /**
-        * **app_public.blog_categories.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: db.TimestampTzString;
-      }
-      export interface Whereable {
-        /**
-        * **app_public.blog_categories.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.blog_categories.description**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.blog_categories.id**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.blog_categories.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
-      }
-      export interface Insertable {
-        /**
-        * **app_public.blog_categories.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
-        /**
-        * **app_public.blog_categories.description**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        description: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.blog_categories.id**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        id: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.blog_categories.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
-      }
-      export interface Updatable {
-        /**
-        * **app_public.blog_categories.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
-        /**
-        * **app_public.blog_categories.description**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        description?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.blog_categories.id**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.blog_categories.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
-      }
-      export type UniqueIndex = 'blog_categories_pkey';
-      export type Column = keyof Selectable;
-      export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
-      export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
-      export type SQL = SQLExpression | SQLExpression[];
+  /* --- enums --- */
+  /* (none) */
+
+  /* --- tables --- */
+
+  /**
+   * **blog_categories**
+   * - Table in database
+   */
+  export namespace blog_categories {
+    export type Table = 'blog_categories';
+    export interface Selectable {
+      /**
+      * **blog_categories.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt: Date;
+      /**
+      * **blog_categories.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string;
+      /**
+      * **blog_categories.id**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      id: string;
+      /**
+      * **blog_categories.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: Date;
     }
-  
-    /**
-     * **app_public.blogs**
-     * - Table in database
-     */
-    export namespace blogs {
-      export type Table = 'app_public.blogs';
-      export interface Selectable {
-        /**
-        * **app_public.blogs.body**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        body: string;
-        /**
-        * **app_public.blogs.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt: Date;
-        /**
-        * **app_public.blogs.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id: string;
-        /**
-        * **app_public.blogs.summary**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        summary: string;
-        /**
-        * **app_public.blogs.title**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        title: string;
-        /**
-        * **app_public.blogs.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: Date;
-      }
-      export interface JSONSelectable {
-        /**
-        * **app_public.blogs.body**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        body: string;
-        /**
-        * **app_public.blogs.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt: db.TimestampTzString;
-        /**
-        * **app_public.blogs.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id: string;
-        /**
-        * **app_public.blogs.summary**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        summary: string;
-        /**
-        * **app_public.blogs.title**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        title: string;
-        /**
-        * **app_public.blogs.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: db.TimestampTzString;
-      }
-      export interface Whereable {
-        /**
-        * **app_public.blogs.body**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        body?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.blogs.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.blogs.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.blogs.summary**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        summary?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.blogs.title**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        title?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.blogs.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
-      }
-      export interface Insertable {
-        /**
-        * **app_public.blogs.body**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        body: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.blogs.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
-        /**
-        * **app_public.blogs.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.blogs.summary**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        summary: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.blogs.title**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        title: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.blogs.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
-      }
-      export interface Updatable {
-        /**
-        * **app_public.blogs.body**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        body?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.blogs.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
-        /**
-        * **app_public.blogs.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.blogs.summary**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        summary?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.blogs.title**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        title?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.blogs.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
-      }
-      export type UniqueIndex = 'blogs_pkey';
-      export type Column = keyof Selectable;
-      export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
-      export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
-      export type SQL = SQLExpression | SQLExpression[];
+    export interface JSONSelectable {
+      /**
+      * **blog_categories.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt: db.TimestampTzString;
+      /**
+      * **blog_categories.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string;
+      /**
+      * **blog_categories.id**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      id: string;
+      /**
+      * **blog_categories.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: db.TimestampTzString;
     }
-  
-    /**
-     * **app_public.categories_on_blogs**
-     * - Table in database
-     */
-    export namespace categories_on_blogs {
-      export type Table = 'app_public.categories_on_blogs';
-      export interface Selectable {
-        /**
-        * **app_public.categories_on_blogs.assignedAt**
-        * - `timestamp` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        assignedAt: Date;
-        /**
-        * **app_public.categories_on_blogs.blogId**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        blogId: string;
-        /**
-        * **app_public.categories_on_blogs.categoryId**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        categoryId: string;
-      }
-      export interface JSONSelectable {
-        /**
-        * **app_public.categories_on_blogs.assignedAt**
-        * - `timestamp` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        assignedAt: db.TimestampString;
-        /**
-        * **app_public.categories_on_blogs.blogId**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        blogId: string;
-        /**
-        * **app_public.categories_on_blogs.categoryId**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        categoryId: string;
-      }
-      export interface Whereable {
-        /**
-        * **app_public.categories_on_blogs.assignedAt**
-        * - `timestamp` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.categories_on_blogs.blogId**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        blogId?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.categories_on_blogs.categoryId**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        categoryId?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      }
-      export interface Insertable {
-        /**
-        * **app_public.categories_on_blogs.assignedAt**
-        * - `timestamp` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment;
-        /**
-        * **app_public.categories_on_blogs.blogId**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        blogId: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.categories_on_blogs.categoryId**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        categoryId: string | db.Parameter<string> | db.SQLFragment;
-      }
-      export interface Updatable {
-        /**
-        * **app_public.categories_on_blogs.assignedAt**
-        * - `timestamp` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment>;
-        /**
-        * **app_public.categories_on_blogs.blogId**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        blogId?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.categories_on_blogs.categoryId**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        categoryId?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-      }
-      export type UniqueIndex = 'categories_on_blogs_pkey';
-      export type Column = keyof Selectable;
-      export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
-      export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
-      export type SQL = SQLExpression | SQLExpression[];
+    export interface Whereable {
+      /**
+      * **blog_categories.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **blog_categories.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **blog_categories.id**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **blog_categories.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
     }
-  
-    /**
-     * **app_public.categories_on_portfolios**
-     * - Table in database
-     */
-    export namespace categories_on_portfolios {
-      export type Table = 'app_public.categories_on_portfolios';
-      export interface Selectable {
-        /**
-        * **app_public.categories_on_portfolios.assignedAt**
-        * - `timestamp` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        assignedAt: Date;
-        /**
-        * **app_public.categories_on_portfolios.categoryId**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        categoryId: string;
-        /**
-        * **app_public.categories_on_portfolios.portfolioId**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        portfolioId: string;
-      }
-      export interface JSONSelectable {
-        /**
-        * **app_public.categories_on_portfolios.assignedAt**
-        * - `timestamp` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        assignedAt: db.TimestampString;
-        /**
-        * **app_public.categories_on_portfolios.categoryId**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        categoryId: string;
-        /**
-        * **app_public.categories_on_portfolios.portfolioId**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        portfolioId: string;
-      }
-      export interface Whereable {
-        /**
-        * **app_public.categories_on_portfolios.assignedAt**
-        * - `timestamp` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.categories_on_portfolios.categoryId**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        categoryId?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.categories_on_portfolios.portfolioId**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        portfolioId?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      }
-      export interface Insertable {
-        /**
-        * **app_public.categories_on_portfolios.assignedAt**
-        * - `timestamp` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment;
-        /**
-        * **app_public.categories_on_portfolios.categoryId**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        categoryId: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.categories_on_portfolios.portfolioId**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        portfolioId: string | db.Parameter<string> | db.SQLFragment;
-      }
-      export interface Updatable {
-        /**
-        * **app_public.categories_on_portfolios.assignedAt**
-        * - `timestamp` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment>;
-        /**
-        * **app_public.categories_on_portfolios.categoryId**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        categoryId?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.categories_on_portfolios.portfolioId**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        portfolioId?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-      }
-      export type UniqueIndex = 'categories_on_portfolios_pkey';
-      export type Column = keyof Selectable;
-      export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
-      export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
-      export type SQL = SQLExpression | SQLExpression[];
+    export interface Insertable {
+      /**
+      * **blog_categories.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+      /**
+      * **blog_categories.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **blog_categories.id**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **blog_categories.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
     }
-  
-    /**
-     * **app_public.contact_submissions**
-     * - Table in database
-     */
-    export namespace contact_submissions {
-      export type Table = 'app_public.contact_submissions';
-      export interface Selectable {
-        /**
-        * **app_public.contact_submissions.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt: Date;
-        /**
-        * **app_public.contact_submissions.email**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        email: string;
-        /**
-        * **app_public.contact_submissions.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id: string;
-        /**
-        * **app_public.contact_submissions.message**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        message: string;
-        /**
-        * **app_public.contact_submissions.name**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        name: string;
-        /**
-        * **app_public.contact_submissions.read**
-        * - `bool` in database
-        * - `NOT NULL`, default: `false`
-        */
-        read: boolean;
-        /**
-        * **app_public.contact_submissions.subject**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        subject: string;
-      }
-      export interface JSONSelectable {
-        /**
-        * **app_public.contact_submissions.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt: db.TimestampTzString;
-        /**
-        * **app_public.contact_submissions.email**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        email: string;
-        /**
-        * **app_public.contact_submissions.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id: string;
-        /**
-        * **app_public.contact_submissions.message**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        message: string;
-        /**
-        * **app_public.contact_submissions.name**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        name: string;
-        /**
-        * **app_public.contact_submissions.read**
-        * - `bool` in database
-        * - `NOT NULL`, default: `false`
-        */
-        read: boolean;
-        /**
-        * **app_public.contact_submissions.subject**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        subject: string;
-      }
-      export interface Whereable {
-        /**
-        * **app_public.contact_submissions.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.contact_submissions.email**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        email?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.contact_submissions.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.contact_submissions.message**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        message?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.contact_submissions.name**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.contact_submissions.read**
-        * - `bool` in database
-        * - `NOT NULL`, default: `false`
-        */
-        read?: boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.contact_submissions.subject**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        subject?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      }
-      export interface Insertable {
-        /**
-        * **app_public.contact_submissions.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
-        /**
-        * **app_public.contact_submissions.email**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        email: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.contact_submissions.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.contact_submissions.message**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        message: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.contact_submissions.name**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        name: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.contact_submissions.read**
-        * - `bool` in database
-        * - `NOT NULL`, default: `false`
-        */
-        read?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment;
-        /**
-        * **app_public.contact_submissions.subject**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        subject: string | db.Parameter<string> | db.SQLFragment;
-      }
-      export interface Updatable {
-        /**
-        * **app_public.contact_submissions.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
-        /**
-        * **app_public.contact_submissions.email**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        email?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.contact_submissions.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.contact_submissions.message**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        message?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.contact_submissions.name**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.contact_submissions.read**
-        * - `bool` in database
-        * - `NOT NULL`, default: `false`
-        */
-        read?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment>;
-        /**
-        * **app_public.contact_submissions.subject**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        subject?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-      }
-      export type UniqueIndex = 'contact_submissions_pkey';
-      export type Column = keyof Selectable;
-      export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
-      export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
-      export type SQL = SQLExpression | SQLExpression[];
+    export interface Updatable {
+      /**
+      * **blog_categories.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **blog_categories.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **blog_categories.id**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **blog_categories.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
     }
-  
-    /**
-     * **app_public.portfolio_categories**
-     * - Table in database
-     */
-    export namespace portfolio_categories {
-      export type Table = 'app_public.portfolio_categories';
-      export interface Selectable {
-        /**
-        * **app_public.portfolio_categories.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt: Date;
-        /**
-        * **app_public.portfolio_categories.description**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        description: string;
-        /**
-        * **app_public.portfolio_categories.id**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        id: string;
-        /**
-        * **app_public.portfolio_categories.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: Date;
-      }
-      export interface JSONSelectable {
-        /**
-        * **app_public.portfolio_categories.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt: db.TimestampTzString;
-        /**
-        * **app_public.portfolio_categories.description**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        description: string;
-        /**
-        * **app_public.portfolio_categories.id**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        id: string;
-        /**
-        * **app_public.portfolio_categories.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: db.TimestampTzString;
-      }
-      export interface Whereable {
-        /**
-        * **app_public.portfolio_categories.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.portfolio_categories.description**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.portfolio_categories.id**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.portfolio_categories.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
-      }
-      export interface Insertable {
-        /**
-        * **app_public.portfolio_categories.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
-        /**
-        * **app_public.portfolio_categories.description**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        description: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.portfolio_categories.id**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        id: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.portfolio_categories.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
-      }
-      export interface Updatable {
-        /**
-        * **app_public.portfolio_categories.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
-        /**
-        * **app_public.portfolio_categories.description**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        description?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.portfolio_categories.id**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.portfolio_categories.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
-      }
-      export type UniqueIndex = 'portfolio_categories_pkey';
-      export type Column = keyof Selectable;
-      export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
-      export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
-      export type SQL = SQLExpression | SQLExpression[];
+    export type UniqueIndex = 'blog_categories_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **blogs**
+   * - Table in database
+   */
+  export namespace blogs {
+    export type Table = 'blogs';
+    export interface Selectable {
+      /**
+      * **blogs.body**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      body: string;
+      /**
+      * **blogs.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt: Date;
+      /**
+      * **blogs.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id: string;
+      /**
+      * **blogs.summary**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      summary: string;
+      /**
+      * **blogs.title**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      title: string;
+      /**
+      * **blogs.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: Date;
     }
-  
-    /**
-     * **app_public.portfolios**
-     * - Table in database
-     */
-    export namespace portfolios {
-      export type Table = 'app_public.portfolios';
-      export interface Selectable {
-        /**
-        * **app_public.portfolios.body**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        body: string;
-        /**
-        * **app_public.portfolios.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt: Date;
-        /**
-        * **app_public.portfolios.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id: string;
-        /**
-        * **app_public.portfolios.summary**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        summary: string;
-        /**
-        * **app_public.portfolios.title**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        title: string;
-        /**
-        * **app_public.portfolios.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: Date;
-        /**
-        * **app_public.portfolios.websiteUrl**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        websiteUrl: string;
-      }
-      export interface JSONSelectable {
-        /**
-        * **app_public.portfolios.body**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        body: string;
-        /**
-        * **app_public.portfolios.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt: db.TimestampTzString;
-        /**
-        * **app_public.portfolios.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id: string;
-        /**
-        * **app_public.portfolios.summary**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        summary: string;
-        /**
-        * **app_public.portfolios.title**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        title: string;
-        /**
-        * **app_public.portfolios.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: db.TimestampTzString;
-        /**
-        * **app_public.portfolios.websiteUrl**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        websiteUrl: string;
-      }
-      export interface Whereable {
-        /**
-        * **app_public.portfolios.body**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        body?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.portfolios.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.portfolios.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.portfolios.summary**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        summary?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.portfolios.title**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        title?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.portfolios.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
-        /**
-        * **app_public.portfolios.websiteUrl**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        websiteUrl?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      }
-      export interface Insertable {
-        /**
-        * **app_public.portfolios.body**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        body: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.portfolios.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
-        /**
-        * **app_public.portfolios.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.portfolios.summary**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        summary: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.portfolios.title**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        title: string | db.Parameter<string> | db.SQLFragment;
-        /**
-        * **app_public.portfolios.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
-        /**
-        * **app_public.portfolios.websiteUrl**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        websiteUrl: string | db.Parameter<string> | db.SQLFragment;
-      }
-      export interface Updatable {
-        /**
-        * **app_public.portfolios.body**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        body?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.portfolios.createdAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
-        */
-        createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
-        /**
-        * **app_public.portfolios.id**
-        * - `uuid` in database
-        * - `NOT NULL`, no default
-        */
-        id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.portfolios.summary**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        summary?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.portfolios.title**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        title?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-        /**
-        * **app_public.portfolios.updatedAt**
-        * - `timestamptz` in database
-        * - `NOT NULL`, no default
-        */
-        updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
-        /**
-        * **app_public.portfolios.websiteUrl**
-        * - `text` in database
-        * - `NOT NULL`, no default
-        */
-        websiteUrl?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-      }
-      export type UniqueIndex = 'portfolios_pkey';
-      export type Column = keyof Selectable;
-      export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
-      export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
-      export type SQL = SQLExpression | SQLExpression[];
+    export interface JSONSelectable {
+      /**
+      * **blogs.body**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      body: string;
+      /**
+      * **blogs.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt: db.TimestampTzString;
+      /**
+      * **blogs.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id: string;
+      /**
+      * **blogs.summary**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      summary: string;
+      /**
+      * **blogs.title**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      title: string;
+      /**
+      * **blogs.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: db.TimestampTzString;
     }
-  
-    /* --- aggregate types --- */
-  
+    export interface Whereable {
+      /**
+      * **blogs.body**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      body?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **blogs.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **blogs.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **blogs.summary**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      summary?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **blogs.title**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      title?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **blogs.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **blogs.body**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      body: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **blogs.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+      /**
+      * **blogs.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **blogs.summary**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      summary: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **blogs.title**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      title: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **blogs.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **blogs.body**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      body?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **blogs.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **blogs.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **blogs.summary**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      summary?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **blogs.title**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      title?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **blogs.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'blogs_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **categories_on_blogs**
+   * - Table in database
+   */
+  export namespace categories_on_blogs {
+    export type Table = 'categories_on_blogs';
+    export interface Selectable {
+      /**
+      * **categories_on_blogs.assignedAt**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      assignedAt: Date;
+      /**
+      * **categories_on_blogs.blogId**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      blogId: string;
+      /**
+      * **categories_on_blogs.categoryId**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      categoryId: string;
+    }
+    export interface JSONSelectable {
+      /**
+      * **categories_on_blogs.assignedAt**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      assignedAt: db.TimestampString;
+      /**
+      * **categories_on_blogs.blogId**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      blogId: string;
+      /**
+      * **categories_on_blogs.categoryId**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      categoryId: string;
+    }
+    export interface Whereable {
+      /**
+      * **categories_on_blogs.assignedAt**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **categories_on_blogs.blogId**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      blogId?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **categories_on_blogs.categoryId**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      categoryId?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **categories_on_blogs.assignedAt**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment;
+      /**
+      * **categories_on_blogs.blogId**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      blogId: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **categories_on_blogs.categoryId**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      categoryId: string | db.Parameter<string> | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **categories_on_blogs.assignedAt**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **categories_on_blogs.blogId**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      blogId?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **categories_on_blogs.categoryId**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      categoryId?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'categories_on_blogs_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **categories_on_portfolios**
+   * - Table in database
+   */
+  export namespace categories_on_portfolios {
+    export type Table = 'categories_on_portfolios';
+    export interface Selectable {
+      /**
+      * **categories_on_portfolios.assignedAt**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      assignedAt: Date;
+      /**
+      * **categories_on_portfolios.categoryId**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      categoryId: string;
+      /**
+      * **categories_on_portfolios.portfolioId**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      portfolioId: string;
+    }
+    export interface JSONSelectable {
+      /**
+      * **categories_on_portfolios.assignedAt**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      assignedAt: db.TimestampString;
+      /**
+      * **categories_on_portfolios.categoryId**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      categoryId: string;
+      /**
+      * **categories_on_portfolios.portfolioId**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      portfolioId: string;
+    }
+    export interface Whereable {
+      /**
+      * **categories_on_portfolios.assignedAt**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **categories_on_portfolios.categoryId**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      categoryId?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **categories_on_portfolios.portfolioId**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      portfolioId?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **categories_on_portfolios.assignedAt**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment;
+      /**
+      * **categories_on_portfolios.categoryId**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      categoryId: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **categories_on_portfolios.portfolioId**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      portfolioId: string | db.Parameter<string> | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **categories_on_portfolios.assignedAt**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      assignedAt?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **categories_on_portfolios.categoryId**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      categoryId?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **categories_on_portfolios.portfolioId**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      portfolioId?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'categories_on_portfolios_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **contact_submissions**
+   * - Table in database
+   */
+  export namespace contact_submissions {
+    export type Table = 'contact_submissions';
+    export interface Selectable {
+      /**
+      * **contact_submissions.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt: Date;
+      /**
+      * **contact_submissions.email**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      email: string;
+      /**
+      * **contact_submissions.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id: string;
+      /**
+      * **contact_submissions.message**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      message: string;
+      /**
+      * **contact_submissions.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name: string;
+      /**
+      * **contact_submissions.read**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      read: boolean;
+      /**
+      * **contact_submissions.subject**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      subject: string;
+    }
+    export interface JSONSelectable {
+      /**
+      * **contact_submissions.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt: db.TimestampTzString;
+      /**
+      * **contact_submissions.email**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      email: string;
+      /**
+      * **contact_submissions.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id: string;
+      /**
+      * **contact_submissions.message**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      message: string;
+      /**
+      * **contact_submissions.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name: string;
+      /**
+      * **contact_submissions.read**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      read: boolean;
+      /**
+      * **contact_submissions.subject**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      subject: string;
+    }
+    export interface Whereable {
+      /**
+      * **contact_submissions.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **contact_submissions.email**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      email?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **contact_submissions.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **contact_submissions.message**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      message?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **contact_submissions.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **contact_submissions.read**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      read?: boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **contact_submissions.subject**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      subject?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **contact_submissions.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+      /**
+      * **contact_submissions.email**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      email: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **contact_submissions.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **contact_submissions.message**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      message: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **contact_submissions.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **contact_submissions.read**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      read?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment;
+      /**
+      * **contact_submissions.subject**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      subject: string | db.Parameter<string> | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **contact_submissions.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **contact_submissions.email**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      email?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **contact_submissions.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **contact_submissions.message**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      message?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **contact_submissions.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **contact_submissions.read**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      read?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **contact_submissions.subject**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      subject?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'contact_submissions_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **portfolio_categories**
+   * - Table in database
+   */
+  export namespace portfolio_categories {
+    export type Table = 'portfolio_categories';
+    export interface Selectable {
+      /**
+      * **portfolio_categories.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt: Date;
+      /**
+      * **portfolio_categories.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string;
+      /**
+      * **portfolio_categories.id**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      id: string;
+      /**
+      * **portfolio_categories.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: Date;
+    }
+    export interface JSONSelectable {
+      /**
+      * **portfolio_categories.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt: db.TimestampTzString;
+      /**
+      * **portfolio_categories.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string;
+      /**
+      * **portfolio_categories.id**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      id: string;
+      /**
+      * **portfolio_categories.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: db.TimestampTzString;
+    }
+    export interface Whereable {
+      /**
+      * **portfolio_categories.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **portfolio_categories.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **portfolio_categories.id**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **portfolio_categories.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **portfolio_categories.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+      /**
+      * **portfolio_categories.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **portfolio_categories.id**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **portfolio_categories.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **portfolio_categories.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **portfolio_categories.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **portfolio_categories.id**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **portfolio_categories.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'portfolio_categories_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **portfolios**
+   * - Table in database
+   */
+  export namespace portfolios {
+    export type Table = 'portfolios';
+    export interface Selectable {
+      /**
+      * **portfolios.body**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      body: string;
+      /**
+      * **portfolios.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt: Date;
+      /**
+      * **portfolios.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id: string;
+      /**
+      * **portfolios.summary**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      summary: string;
+      /**
+      * **portfolios.title**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      title: string;
+      /**
+      * **portfolios.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: Date;
+      /**
+      * **portfolios.websiteUrl**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      websiteUrl: string;
+    }
+    export interface JSONSelectable {
+      /**
+      * **portfolios.body**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      body: string;
+      /**
+      * **portfolios.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt: db.TimestampTzString;
+      /**
+      * **portfolios.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id: string;
+      /**
+      * **portfolios.summary**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      summary: string;
+      /**
+      * **portfolios.title**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      title: string;
+      /**
+      * **portfolios.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: db.TimestampTzString;
+      /**
+      * **portfolios.websiteUrl**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      websiteUrl: string;
+    }
+    export interface Whereable {
+      /**
+      * **portfolios.body**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      body?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **portfolios.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **portfolios.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **portfolios.summary**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      summary?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **portfolios.title**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      title?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **portfolios.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **portfolios.websiteUrl**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      websiteUrl?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **portfolios.body**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      body: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **portfolios.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+      /**
+      * **portfolios.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **portfolios.summary**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      summary: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **portfolios.title**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      title: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **portfolios.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
+      /**
+      * **portfolios.websiteUrl**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      websiteUrl: string | db.Parameter<string> | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **portfolios.body**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      body?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **portfolios.createdAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `CURRENT_TIMESTAMP`
+      */
+      createdAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **portfolios.id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `gen_random_uuid()`
+      */
+      id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **portfolios.summary**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      summary?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **portfolios.title**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      title?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **portfolios.updatedAt**
+      * - `timestamptz` in database
+      * - `NOT NULL`, no default
+      */
+      updatedAt?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
+      /**
+      * **portfolios.websiteUrl**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      websiteUrl?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'portfolios_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /* --- aggregate types --- */
+
+  export namespace app_public {  
     export type Table = blog_categories.Table | blogs.Table | categories_on_blogs.Table | categories_on_portfolios.Table | contact_submissions.Table | portfolio_categories.Table | portfolios.Table;
     export type Selectable = blog_categories.Selectable | blogs.Selectable | categories_on_blogs.Selectable | categories_on_portfolios.Selectable | contact_submissions.Selectable | portfolio_categories.Selectable | portfolios.Selectable;
     export type JSONSelectable = blog_categories.JSONSelectable | blogs.JSONSelectable | categories_on_blogs.JSONSelectable | categories_on_portfolios.JSONSelectable | contact_submissions.JSONSelectable | portfolio_categories.JSONSelectable | portfolios.JSONSelectable;
@@ -1222,6 +1221,7 @@ declare module 'zapatos/schema' {
     export type AllMaterializedViews = [];
     export type AllTablesAndViews = [blog_categories.Table, blogs.Table, categories_on_blogs.Table, categories_on_portfolios.Table, contact_submissions.Table, portfolio_categories.Table, portfolios.Table];
   }
+
 
 
   /* === global aggregate types === */
@@ -1247,83 +1247,83 @@ declare module 'zapatos/schema' {
   /* === lookups === */
 
   export type SelectableForTable<T extends Table> = {
-    "app_public.blog_categories": app_public.blog_categories.Selectable;
-    "app_public.blogs": app_public.blogs.Selectable;
-    "app_public.categories_on_blogs": app_public.categories_on_blogs.Selectable;
-    "app_public.categories_on_portfolios": app_public.categories_on_portfolios.Selectable;
-    "app_public.contact_submissions": app_public.contact_submissions.Selectable;
-    "app_public.portfolio_categories": app_public.portfolio_categories.Selectable;
-    "app_public.portfolios": app_public.portfolios.Selectable;
+    "blog_categories": blog_categories.Selectable;
+    "blogs": blogs.Selectable;
+    "categories_on_blogs": categories_on_blogs.Selectable;
+    "categories_on_portfolios": categories_on_portfolios.Selectable;
+    "contact_submissions": contact_submissions.Selectable;
+    "portfolio_categories": portfolio_categories.Selectable;
+    "portfolios": portfolios.Selectable;
   }[T];
 
   export type JSONSelectableForTable<T extends Table> = {
-    "app_public.blog_categories": app_public.blog_categories.JSONSelectable;
-    "app_public.blogs": app_public.blogs.JSONSelectable;
-    "app_public.categories_on_blogs": app_public.categories_on_blogs.JSONSelectable;
-    "app_public.categories_on_portfolios": app_public.categories_on_portfolios.JSONSelectable;
-    "app_public.contact_submissions": app_public.contact_submissions.JSONSelectable;
-    "app_public.portfolio_categories": app_public.portfolio_categories.JSONSelectable;
-    "app_public.portfolios": app_public.portfolios.JSONSelectable;
+    "blog_categories": blog_categories.JSONSelectable;
+    "blogs": blogs.JSONSelectable;
+    "categories_on_blogs": categories_on_blogs.JSONSelectable;
+    "categories_on_portfolios": categories_on_portfolios.JSONSelectable;
+    "contact_submissions": contact_submissions.JSONSelectable;
+    "portfolio_categories": portfolio_categories.JSONSelectable;
+    "portfolios": portfolios.JSONSelectable;
   }[T];
 
   export type WhereableForTable<T extends Table> = {
-    "app_public.blog_categories": app_public.blog_categories.Whereable;
-    "app_public.blogs": app_public.blogs.Whereable;
-    "app_public.categories_on_blogs": app_public.categories_on_blogs.Whereable;
-    "app_public.categories_on_portfolios": app_public.categories_on_portfolios.Whereable;
-    "app_public.contact_submissions": app_public.contact_submissions.Whereable;
-    "app_public.portfolio_categories": app_public.portfolio_categories.Whereable;
-    "app_public.portfolios": app_public.portfolios.Whereable;
+    "blog_categories": blog_categories.Whereable;
+    "blogs": blogs.Whereable;
+    "categories_on_blogs": categories_on_blogs.Whereable;
+    "categories_on_portfolios": categories_on_portfolios.Whereable;
+    "contact_submissions": contact_submissions.Whereable;
+    "portfolio_categories": portfolio_categories.Whereable;
+    "portfolios": portfolios.Whereable;
   }[T];
 
   export type InsertableForTable<T extends Table> = {
-    "app_public.blog_categories": app_public.blog_categories.Insertable;
-    "app_public.blogs": app_public.blogs.Insertable;
-    "app_public.categories_on_blogs": app_public.categories_on_blogs.Insertable;
-    "app_public.categories_on_portfolios": app_public.categories_on_portfolios.Insertable;
-    "app_public.contact_submissions": app_public.contact_submissions.Insertable;
-    "app_public.portfolio_categories": app_public.portfolio_categories.Insertable;
-    "app_public.portfolios": app_public.portfolios.Insertable;
+    "blog_categories": blog_categories.Insertable;
+    "blogs": blogs.Insertable;
+    "categories_on_blogs": categories_on_blogs.Insertable;
+    "categories_on_portfolios": categories_on_portfolios.Insertable;
+    "contact_submissions": contact_submissions.Insertable;
+    "portfolio_categories": portfolio_categories.Insertable;
+    "portfolios": portfolios.Insertable;
   }[T];
 
   export type UpdatableForTable<T extends Table> = {
-    "app_public.blog_categories": app_public.blog_categories.Updatable;
-    "app_public.blogs": app_public.blogs.Updatable;
-    "app_public.categories_on_blogs": app_public.categories_on_blogs.Updatable;
-    "app_public.categories_on_portfolios": app_public.categories_on_portfolios.Updatable;
-    "app_public.contact_submissions": app_public.contact_submissions.Updatable;
-    "app_public.portfolio_categories": app_public.portfolio_categories.Updatable;
-    "app_public.portfolios": app_public.portfolios.Updatable;
+    "blog_categories": blog_categories.Updatable;
+    "blogs": blogs.Updatable;
+    "categories_on_blogs": categories_on_blogs.Updatable;
+    "categories_on_portfolios": categories_on_portfolios.Updatable;
+    "contact_submissions": contact_submissions.Updatable;
+    "portfolio_categories": portfolio_categories.Updatable;
+    "portfolios": portfolios.Updatable;
   }[T];
 
   export type UniqueIndexForTable<T extends Table> = {
-    "app_public.blog_categories": app_public.blog_categories.UniqueIndex;
-    "app_public.blogs": app_public.blogs.UniqueIndex;
-    "app_public.categories_on_blogs": app_public.categories_on_blogs.UniqueIndex;
-    "app_public.categories_on_portfolios": app_public.categories_on_portfolios.UniqueIndex;
-    "app_public.contact_submissions": app_public.contact_submissions.UniqueIndex;
-    "app_public.portfolio_categories": app_public.portfolio_categories.UniqueIndex;
-    "app_public.portfolios": app_public.portfolios.UniqueIndex;
+    "blog_categories": blog_categories.UniqueIndex;
+    "blogs": blogs.UniqueIndex;
+    "categories_on_blogs": categories_on_blogs.UniqueIndex;
+    "categories_on_portfolios": categories_on_portfolios.UniqueIndex;
+    "contact_submissions": contact_submissions.UniqueIndex;
+    "portfolio_categories": portfolio_categories.UniqueIndex;
+    "portfolios": portfolios.UniqueIndex;
   }[T];
 
   export type ColumnForTable<T extends Table> = {
-    "app_public.blog_categories": app_public.blog_categories.Column;
-    "app_public.blogs": app_public.blogs.Column;
-    "app_public.categories_on_blogs": app_public.categories_on_blogs.Column;
-    "app_public.categories_on_portfolios": app_public.categories_on_portfolios.Column;
-    "app_public.contact_submissions": app_public.contact_submissions.Column;
-    "app_public.portfolio_categories": app_public.portfolio_categories.Column;
-    "app_public.portfolios": app_public.portfolios.Column;
+    "blog_categories": blog_categories.Column;
+    "blogs": blogs.Column;
+    "categories_on_blogs": categories_on_blogs.Column;
+    "categories_on_portfolios": categories_on_portfolios.Column;
+    "contact_submissions": contact_submissions.Column;
+    "portfolio_categories": portfolio_categories.Column;
+    "portfolios": portfolios.Column;
   }[T];
 
   export type SQLForTable<T extends Table> = {
-    "app_public.blog_categories": app_public.blog_categories.SQL;
-    "app_public.blogs": app_public.blogs.SQL;
-    "app_public.categories_on_blogs": app_public.categories_on_blogs.SQL;
-    "app_public.categories_on_portfolios": app_public.categories_on_portfolios.SQL;
-    "app_public.contact_submissions": app_public.contact_submissions.SQL;
-    "app_public.portfolio_categories": app_public.portfolio_categories.SQL;
-    "app_public.portfolios": app_public.portfolios.SQL;
+    "blog_categories": blog_categories.SQL;
+    "blogs": blogs.SQL;
+    "categories_on_blogs": categories_on_blogs.SQL;
+    "categories_on_portfolios": categories_on_portfolios.SQL;
+    "contact_submissions": contact_submissions.SQL;
+    "portfolio_categories": portfolio_categories.SQL;
+    "portfolios": portfolios.SQL;
   }[T];
 
 }

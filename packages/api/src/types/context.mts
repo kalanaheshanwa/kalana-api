@@ -1,7 +1,7 @@
-import { PrismaClient } from '#prisma/client';
+import { Pool } from 'pg';
 import { AppConfig } from '../config/index.mjs';
 
 export interface AppContext {
   config: AppConfig;
-  db: PrismaClient;
+  pool: Pool;
 }

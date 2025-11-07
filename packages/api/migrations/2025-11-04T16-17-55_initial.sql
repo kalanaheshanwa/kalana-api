@@ -4,7 +4,7 @@
 
 DROP TABLE IF EXISTS "contact_submissions";
 CREATE TABLE "contact_submissions" (
-    "id" UUID NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "subject" TEXT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE "contact_submissions" (
 -- Portfolio
 DROP TABLE IF EXISTS "portfolios";
 CREATE TABLE "portfolios" (
-    "id" UUID NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "title" TEXT NOT NULL,
     "summary" TEXT NOT NULL,
     "body" TEXT NOT NULL,
@@ -53,7 +53,7 @@ CREATE INDEX ASYNC "categories_on_portfolios_categoryId_portfolioId_idx" ON "cat
 -- Blog
 DROP TABLE IF EXISTS "blogs";
 CREATE TABLE "blogs" (
-    "id" UUID NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "title" TEXT NOT NULL,
     "summary" TEXT NOT NULL,
     "body" TEXT NOT NULL,

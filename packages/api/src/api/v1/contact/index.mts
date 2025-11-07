@@ -12,6 +12,26 @@ export default function (context: AppContext): Router {
   /**
    * @openapi
    * /api/v1/contact:
+   *   get:
+   *     tags:
+   *       - Contact
+   *     summary: List all contact submissions paginated
+   *     responses:
+   *       201:
+   *         description: List all contact submissions paginated
+   */
+  router.get(
+    '/',
+    asyncMiddleware(async (_req, res) => {
+      const data = await _contact.list();
+
+      return res.status(200).json({ data });
+    }),
+  );
+
+  /**
+   * @openapi
+   * /api/v1/contact:
    *   post:
    *     tags:
    *       - Contact

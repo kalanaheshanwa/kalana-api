@@ -10,11 +10,9 @@
     "build:watch": "tsc --watch --preserveWatchOutput --project tsconfig.json",
     "load-vars": "dotenv -e .env --",
     "db:migrate:new": "tsx scripts/db/migrate-new.mts",
-    "db:migrate:dev": "yarn load-vars prisma migrate dev --skip-seed",
     "db:apply": "yarn load-vars tsx scripts/db/migrate-apply.mts",
     "db:apply:dev": "dotenv -e .env.dev -- tsx scripts/db/migrate-apply.mts",
     "db:apply:prod": "dotenv -e .env.prod -- tsx scripts/db/migrate-apply.mts",
-    "db:seed": "yarn load-vars prisma db seed",
     "db:reset": "yarn load-vars tsx scripts/db/migrate-reset.mts --yes",
     "db:types": "yarn load-vars tsx scripts/db/zapatos.mts",
     "db:init": "yarn load-vars tsx scripts/db-setup.mts",
@@ -25,7 +23,6 @@
     "infra:down": "yarn load-vars podman compose -f ./docker-compose.yaml down"
   },
   "devDependencies": {
-    "@aws-sdk/credential-providers": "^3.922.0",
     "@faker-js/faker": "^10.0.0",
     "@types/cors": "^2.8.19",
     "@types/crypto-js": "^4.2.2",
@@ -47,6 +44,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.893.0",
+    "@aws-sdk/credential-providers": "^3.922.0",
     "@aws-sdk/dsql-signer": "^3.922.0",
     "@codegenie/serverless-express": "^4.17.0",
     "aws-jwt-verify": "^5.1.0",

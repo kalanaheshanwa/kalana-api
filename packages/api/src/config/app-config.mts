@@ -12,6 +12,21 @@ const schema = z.object({
     .string()
     .transform((arg) => arg.split(','))
     .pipe(z.string().trim().url().array().nonempty()),
+
+  POSTGRES_DB: z.string(),
+  POSTGRES_HOST: z.string(),
+  POSTGRES_PORT: z.coerce.number().int().positive().min(1000),
+  POSTGRES_USER: z.string(),
+
+  APP_SCHEMA: z.string(),
+  APP_OWNER: z.string(),
+  APP_OWNER_PASSWORD: z.string(),
+  APP_USER: z.string(),
+  APP_USER_PASSWORD: z.string(),
+
+  APP_AWS_PROFILE: z.string().optional(),
+  APP_AWS_DB_REGION: z.string(),
+  APP_AWS_DB_CONNECT_ROLE_ARN: z.string(),
 });
 
 interface ExtendedAppConfig {

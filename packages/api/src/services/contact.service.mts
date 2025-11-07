@@ -1,15 +1,22 @@
-import { ContactSubmission, PrismaClient } from '#prisma/client';
+import * as db from 'zapatos/db';
+import type * as s from 'zapatos/schema';
 import { ContactSubmissionSchema } from '../api/v1/contact/schemas/index.mjs';
 import { AppContext } from '../types/index.mjs';
 
 export class ContactService {
-  private readonly _db: PrismaClient;
+  private readonly pool: AppContext['pool'];
 
-  constructor({ db }: AppContext) {
-    this._db = db;
+  constructor({ pool }: AppContext) {
+    this.pool = pool;
   }
 
-  create(data: ContactSubmissionSchema): Promise<ContactSubmission> {
-    return this._db.contactSubmission.create({ data });
+  create(data: ContactSubmissionSchema): Promise<s.contact_submissions.JSONSelectable> {
+    return db.insert('contact_submissions', data).run(this.pool);
+  }
+
+  list(): Promise<s.contact_submissions.Selectable[]> {
+    return db.sql<s.contact_submissions.SQL, s.contact_submissions.Selectable[]>`
+      SELECT * FROM ${'contact_submissions'}
+    `.run(this.pool);
   }
 }

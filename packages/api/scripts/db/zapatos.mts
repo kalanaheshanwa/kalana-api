@@ -28,6 +28,7 @@ const config = getConfig();
         exclude: ['__migrations'],
       },
     },
+    unprefixedSchema: config.APP_SCHEMA,
     outDir: './generated',
   });
 })().catch((e) => {
