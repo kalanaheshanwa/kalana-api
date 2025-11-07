@@ -15,3 +15,15 @@ module "oidc" {
 module "dsql" {
   source = "./modules/dsql"
 }
+
+module "ecr" {
+  source = "./modules/ecr"
+
+  project_namespace = var.project_namespace
+}
+
+module "iam" {
+  source = "./modules/iam"
+
+  project_namespace = var.project_namespace
+}
