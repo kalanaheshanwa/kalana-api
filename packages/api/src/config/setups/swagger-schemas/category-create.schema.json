@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "example": "Business" },
+    "description": {
+      "type": "string",
+      "example": "A business is an organization or enterprise that engages in commercial, industrial, or professional activities to provide goods or services with the aim of making a profit."
+    }
+  },
+  "required": ["id", "description"]
+}

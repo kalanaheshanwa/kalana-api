@@ -1,8 +1,7 @@
 import { Router } from 'express';
-import { asyncMiddleware, validateSchema } from '../../../middleware/index.mjs';
-import { BlogService } from '../../../services/index.mjs';
-import { AppContext } from '../../../types/index.mjs';
-import categories from './categories/index.mjs';
+import { asyncMiddleware, validateSchema } from '../../../../middleware/index.mjs';
+import { BlogService } from '../../../../services/index.mjs';
+import { AppContext } from '../../../../types/index.mjs';
 import { createSchema } from './schemas/index.mjs';
 
 const router = Router();
@@ -10,23 +9,21 @@ const router = Router();
 export default function (context: AppContext): Router {
   const _blog = new BlogService(context);
 
-  router.use('/categories', categories(context));
-
   /**
    * @openapi
-   * /api/v1/blogs:
+   * /api/v1/blogs/categories:
    *   get:
    *     tags:
    *       - Blog
-   *     summary: List all blogs paginated
+   *     summary: List all blog categories paginated
    *     responses:
    *       201:
-   *         description: List all blogs paginated
+   *         description: List all blog categories paginated
    */
   router.get(
     '/',
     asyncMiddleware(async (_req, res) => {
-      const data = await _blog.list();
+      const data = await _blog.listCategories();
 
       return res.status(200).json({ data });
     }),
@@ -34,25 +31,25 @@ export default function (context: AppContext): Router {
 
   /**
    * @openapi
-   * /api/v1/blogs:
+   * /api/v1/blogs/categories:
    *   post:
    *     tags:
    *       - Blog
-   *     summary: Creates a blog
+   *     summary: Creates a blog category
    *     requestBody:
    *       content:
    *         application/json:
    *           schema:
-   *             $ref: "#/components/schemas/BlogCreate"
+   *             $ref: "#/components/schemas/CategoryCreate"
    *     responses:
    *       201:
-   *         description: Creates an entry in blogs
+   *         description: Creates an entry in blog_categories
    */
   router.post(
     '/',
     validateSchema(createSchema),
     asyncMiddleware(async (req, res) => {
-      const data = await _blog.create(req.body);
+      const data = await _blog.createCategory(req.body);
 
       return res.status(201).json({ data });
     }),

@@ -8,8 +8,8 @@ const router = Router();
 
 export default function (context: AppContext): Router {
   router.use('/contact', contact(context));
-  router.use('/blog', blog(context));
-  router.use('/portfolio', portfolio(context));
+  router.use('/blogs', blog(context));
+  router.use('/portfolios', portfolio(context));
 
   return router;
 }
