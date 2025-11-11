@@ -2,7 +2,8 @@ import { Router } from 'express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { AppContext } from '../../types/index.mjs';
-import ContactSubmission from './contact-submission.schema.json' with { type: 'json' };
+import BlogCreate from './swagger-schemas/blog-create.schema.json' with { type: 'json' };
+import ContactSubmission from './swagger-schemas/contact-submission.schema.json' with { type: 'json' };
 
 const router = Router({ strict: true });
 
@@ -17,6 +18,7 @@ export function setupSwagger({ config }: AppContext) {
       components: {
         schemas: {
           ContactSubmission,
+          BlogCreate,
         },
         securitySchemes: {
           bearerAuth: {
