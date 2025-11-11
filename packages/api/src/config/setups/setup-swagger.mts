@@ -4,6 +4,7 @@ import swaggerUi from 'swagger-ui-express';
 import { AppContext } from '../../types/index.mjs';
 import BlogCreate from './swagger-schemas/blog-create.schema.json' with { type: 'json' };
 import ContactSubmission from './swagger-schemas/contact-submission.schema.json' with { type: 'json' };
+import PortfolioCreate from './swagger-schemas/portfolio-create.schema.json' with { type: 'json' };
 
 const router = Router({ strict: true });
 
@@ -19,6 +20,7 @@ export function setupSwagger({ config }: AppContext) {
         schemas: {
           ContactSubmission,
           BlogCreate,
+          PortfolioCreate,
         },
         securitySchemes: {
           bearerAuth: {

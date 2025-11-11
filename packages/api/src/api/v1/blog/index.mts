@@ -7,7 +7,7 @@ import { createSchema } from './schemas/index.mjs';
 const router = Router();
 
 export default function (context: AppContext): Router {
-  const _contact = new BlogService(context);
+  const _blog = new BlogService(context);
 
   /**
    * @openapi
@@ -23,7 +23,7 @@ export default function (context: AppContext): Router {
   router.get(
     '/',
     asyncMiddleware(async (_req, res) => {
-      const data = await _contact.list();
+      const data = await _blog.list();
 
       return res.status(200).json({ data });
     }),
@@ -49,7 +49,7 @@ export default function (context: AppContext): Router {
     '/',
     validateSchema(createSchema),
     asyncMiddleware(async (req, res) => {
-      const data = await _contact.create(req.body);
+      const data = await _blog.create(req.body);
 
       return res.status(201).json({ data });
     }),
