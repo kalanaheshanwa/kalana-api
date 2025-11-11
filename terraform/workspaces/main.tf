@@ -59,3 +59,15 @@ module "lambda" {
   APP_USER             = var.APP_USER
   APP_AWS_DB_REGION    = var.APP_AWS_DB_REGION
 }
+
+module "api_gateway" {
+  source = "./modules/gateway"
+
+  project_namespace         = var.project_namespace
+  env                       = var.env
+  route53_zone_id           = data.aws_route53_zone.root.zone_id
+  acm_certificate_api_arn   = module.acm.certificate_api_arn
+  domain_api                = module.acm.domain_api
+  lambda_main_invoke_arn    = module.lambda.lambda_main_invoke_arn
+  lambda_main_function_name = module.lambda.lambda_main_function_name
+}

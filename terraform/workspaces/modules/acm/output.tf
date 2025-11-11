@@ -13,12 +13,12 @@ output "domain_primary" {
   description = "Primary domain of the env"
 }
 
-# output "domain_api" {
-#   value       = local.api_domain
-#   description = "Domain name of the api"
-# }
+output "domain_api" {
+  value       = local.api_domain
+  description = "Domain name of the api"
+}
 
-# output "certificate_api_arn" {
-#   value       = aws_acm_certificate.api.arn
-#   description = "ARN of the api certificate"
-# }
+output "certificate_api_arn" {
+  value       = aws_acm_certificate.api.arn
+  description = "ARN of the api certificate"
+}
