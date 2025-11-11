@@ -13,6 +13,13 @@
     "websiteUrl": {
       "type": "string",
       "example": "https://google.lk"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "example": ["Business"]
     }
   },
   "required": ["title", "summary", "body"]

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import * as db from 'zapatos/db';
 import type * as s from 'zapatos/schema';
 import { PortfolioCategoryCreateSchema } from '../api/v1/portfolio/categories/schemas/index.mjs';
@@ -13,7 +14,18 @@ export class PortfolioService {
   }
 
   create(data: PortfolioCreateSchema): Promise<s.portfolios.JSONSelectable> {
-    return db.insert('portfolios', withUpdated(data)).run(this.pool);
+    return db.transaction(this.pool, db.IsolationLevel.RepeatableRead, async (txn) => {
+      const result = await db.insert('portfolios', withUpdated(_.omit(data, ['categories']))).run(txn);
+
+      await db
+        .insert(
+          'categories_on_portfolios',
+          data.categories.map((c) => ({ portfolioId: result.id, categoryId: c })),
+        )
+        .run(txn);
+
+      return result;
+    });
   }
 
   list(): Promise<s.portfolios.Selectable[]> {

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import * as db from 'zapatos/db';
 import type * as s from 'zapatos/schema';
 import { BlogCategoryCreateSchema } from '../api/v1/blog/categories/schemas/index.mjs';
@@ -13,7 +14,18 @@ export class BlogService {
   }
 
   create(data: BlogCreateSchema): Promise<s.blogs.JSONSelectable> {
-    return db.insert('blogs', withUpdated(data)).run(this.pool);
+    return db.transaction(this.pool, db.IsolationLevel.RepeatableRead, async (txn) => {
+      const result = await db.insert('blogs', withUpdated(_.omit(data, ['categories']))).run(txn);
+
+      await db
+        .insert(
+          'categories_on_blogs',
+          data.categories.map((c) => ({ blogId: result.id, categoryId: c })),
+        )
+        .run(txn);
+
+      return result;
+    });
   }
 
   list(): Promise<s.blogs.Selectable[]> {
