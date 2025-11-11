@@ -42,3 +42,20 @@ module "dsql" {
 
   env = var.env
 }
+
+module "lambda" {
+  source = "./modules/lambda"
+
+  project_namespace = var.project_namespace
+  env               = var.env
+  v_api             = var.v_api
+  dsql_cluster_arn  = module.dsql.cluster_arn
+
+  NODE_ENV             = var.NODE_ENV
+  CORS_ALLOWED_ORIGINS = var.CORS_ALLOWED_ORIGINS
+  POSTGRES_DB          = var.POSTGRES_DB
+  POSTGRES_PORT        = var.POSTGRES_PORT
+  POSTGRES_HOST        = var.POSTGRES_HOST
+  APP_USER             = var.APP_USER
+  APP_AWS_DB_REGION    = var.APP_AWS_DB_REGION
+}

@@ -8,19 +8,14 @@ variable "project_namespace" {
   description = "Namespace for the project"
 }
 
-variable "domain_apex" {
-  type        = string
-  description = "Apex/root domain name"
-}
-
-variable "subdomain_api" {
-  description = "Subdomain label for the API (e.g., 'api')"
-  type        = string
-}
-
 variable "v_api" {
   description = "API image version/tag"
   type        = string
+}
+
+variable "dsql_cluster_arn" {
+  type        = string
+  description = "ARN of the Aurora DSQL cluster for DbConnect permissions"
 }
 
 # lambda env

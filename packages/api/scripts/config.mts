@@ -9,10 +9,8 @@ const baseSchema = z.object({
   POSTGRES_USER: z.string(),
 
   APP_OWNER: z.string(),
-  APP_OWNER_PASSWORD: z.string(),
   APP_SCHEMA: z.string(),
   APP_USER: z.string(),
-  APP_USER_PASSWORD: z.string(),
 
   APP_AWS_DB_CONNECT_ROLE_ARN: z.string(),
   APP_AWS_DB_REGION: z.string(),

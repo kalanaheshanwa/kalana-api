@@ -1,4 +1,4 @@
-import { fromIni, fromTemporaryCredentials } from '@aws-sdk/credential-providers';
+import { fromIni, fromNodeProviderChain, fromTemporaryCredentials } from '@aws-sdk/credential-providers';
 import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import type { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import { Pool } from 'pg';
@@ -77,13 +77,20 @@ async function buildTokenProvider(config: AppConfig): Promise<() => Promise<stri
 }
 
 async function resolveAwsCredentials(config: AppConfig): Promise<AwsCredentialIdentityProvider> {
-  const masterCredentials = fromIni({ profile: config.APP_AWS_PROFILE });
+  if (config.APP_AWS_DB_CONNECT_ROLE_ARN) {
+    const masterCredentials = config.APP_AWS_PROFILE ? fromIni({ profile: config.APP_AWS_PROFILE }) : fromNodeProviderChain();
+    return fromTemporaryCredentials({
+      masterCredentials,
+      params: {
+        RoleArn: config.APP_AWS_DB_CONNECT_ROLE_ARN,
+        RoleSessionName: 'aurora-dsql-connect',
+      },
+    });
+  }
 
-  return fromTemporaryCredentials({
-    masterCredentials,
-    params: {
-      RoleArn: config.APP_AWS_DB_CONNECT_ROLE_ARN,
-      RoleSessionName: 'aurora-dsql-connect',
-    },
-  });
+  if (config.APP_AWS_PROFILE) {
+    return fromIni({ profile: config.APP_AWS_PROFILE });
+  }
+
+  return fromNodeProviderChain();
 }
