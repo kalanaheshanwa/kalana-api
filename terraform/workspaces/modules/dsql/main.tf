@@ -10,14 +10,19 @@ data "aws_iam_role" "sso_power_user_role" {
   name = "AWSReservedSSO_PowerUserAccess_7c5e48e31e9cf8a4"
 }
 
+data "aws_caller_identity" "current" {}
+
 data "aws_iam_policy_document" "dsql_role_assume_role_trust" {
   statement {
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
 
     principals {
-      type        = "AWS"
-      identifiers = [data.aws_iam_role.sso_power_user_role.arn]
+      type = "AWS"
+      identifiers = [
+        data.aws_iam_role.sso_power_user_role.arn,
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
+      ]
     }
   }
 }

@@ -50,6 +50,7 @@ module "lambda" {
   env               = var.env
   v_api             = var.v_api
   dsql_cluster_arn  = module.dsql.cluster_arn
+  dsql_connect_role_arn = module.dsql.role_arn
 
   NODE_ENV             = var.NODE_ENV
   CORS_ALLOWED_ORIGINS = var.CORS_ALLOWED_ORIGINS

@@ -45,6 +45,19 @@ resource "aws_iam_policy" "lambda_dsql_connect" {
   policy = data.aws_iam_policy_document.lambda_dsql_connect.json
 }
 
+data "aws_iam_policy_document" "lambda_assume_dsql" {
+  statement {
+    effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
+    resources = [var.dsql_connect_role_arn]
+  }
+}
+
+resource "aws_iam_policy" "lambda_assume_dsql" {
+  name   = "${var.project_namespace}_api_lambda_assume_dsql_${var.env}"
+  policy = data.aws_iam_policy_document.lambda_assume_dsql.json
+}
+
 resource "aws_iam_role" "lambda_handler" {
   name               = "${var.project_namespace}_api_lambda_handler_${var.env}"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
@@ -65,6 +78,11 @@ resource "aws_iam_role_policy_attachment" "lambda_dsql_connect" {
   policy_arn = aws_iam_policy.lambda_dsql_connect.arn
 }
 
+resource "aws_iam_role_policy_attachment" "lambda_assume_dsql" {
+  role       = aws_iam_role.lambda_handler.name
+  policy_arn = aws_iam_policy.lambda_assume_dsql.arn
+}
+
 resource "aws_lambda_function" "handler" {
   function_name = "${var.project_namespace}_handler_${var.env}"
   role          = aws_iam_role.lambda_handler.arn
@@ -78,14 +96,15 @@ resource "aws_lambda_function" "handler" {
 
   environment {
     variables = {
-      "NODE_ENV"             = var.NODE_ENV
-      "PORT"                 = "3000" # fake port (unused)
-      "CORS_ALLOWED_ORIGINS" = var.CORS_ALLOWED_ORIGINS
-      "POSTGRES_DB"          = var.POSTGRES_DB
-      "POSTGRES_PORT"        = var.POSTGRES_PORT
-      "POSTGRES_HOST"        = var.POSTGRES_HOST
-      "APP_USER"             = var.APP_USER
-      "APP_AWS_DB_REGION"    = var.APP_AWS_DB_REGION
+      "NODE_ENV"                  = var.NODE_ENV
+      "PORT"                      = "3000" # fake port (unused)
+      "CORS_ALLOWED_ORIGINS"      = var.CORS_ALLOWED_ORIGINS
+      "POSTGRES_DB"               = var.POSTGRES_DB
+      "POSTGRES_PORT"             = var.POSTGRES_PORT
+      "POSTGRES_HOST"             = var.POSTGRES_HOST
+      "APP_USER"                  = var.APP_USER
+      "APP_AWS_DB_REGION"         = var.APP_AWS_DB_REGION
+      "APP_AWS_DB_CONNECT_ROLE_ARN" = var.dsql_connect_role_arn
     }
   }
 }

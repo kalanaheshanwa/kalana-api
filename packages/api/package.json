@@ -14,6 +14,7 @@
     "db:apply:dev": "dotenv -e .env.dev -- tsx scripts/db/migrate-apply.mts",
     "db:apply:prod": "dotenv -e .env.prod -- tsx scripts/db/migrate-apply.mts",
     "db:reset": "yarn load-vars tsx scripts/db/migrate-reset.mts --yes",
+    "db:reset:dev": "dotenv -e .env.dev -- tsx scripts/db/migrate-reset.mts --yes",
     "db:types": "yarn load-vars tsx scripts/db/zapatos.mts",
     "db:init": "yarn load-vars tsx scripts/db-setup.mts",
     "db:init:dev": "dotenv -e .env.dev -- tsx scripts/db-setup.mts",

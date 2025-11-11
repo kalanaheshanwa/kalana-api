@@ -18,6 +18,11 @@ variable "dsql_cluster_arn" {
   description = "ARN of the Aurora DSQL cluster for DbConnect permissions"
 }
 
+variable "dsql_connect_role_arn" {
+  type        = string
+  description = "ARN of the IAM role that has been granted Aurora DSQL DbConnect access"
+}
+
 # lambda env
 variable "NODE_ENV" {
   type        = string
