@@ -15,11 +15,29 @@ CREATE TABLE "contact_submissions" (
     CONSTRAINT "contact_submissions_pkey" PRIMARY KEY ("id")
 );
 
+-- Commonly used statuses across blog and portfolio
+DROP TABLE IF EXISTS "doc_statuses";
+CREATE TABLE "doc_statuses" (
+    "id" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ NOT NULL,
+
+    CONSTRAINT "doc_statuses_pkey" PRIMARY KEY ("id")
+);
+
+INSERT INTO "doc_statuses"
+  ("id", "description", "updatedAt")
+VALUES
+  ('PUBLISHED', 'Document is published and exposed via the Website.', NOW()),
+  ('DRAFT', 'Document is created, but not exposed via the website.', NOW());
+
 -- Portfolio
 DROP TABLE IF EXISTS "portfolios";
 CREATE TABLE "portfolios" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "title" TEXT NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'DRAFT',
     "summary" TEXT NOT NULL,
     "body" TEXT NOT NULL,
     "websiteUrl" TEXT NOT NULL,
@@ -43,7 +61,7 @@ DROP TABLE IF EXISTS "categories_on_portfolios";
 CREATE TABLE "categories_on_portfolios" (
     "portfolioId" UUID NOT NULL,
     "categoryId" TEXT NOT NULL,
-    "assignedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "assignedAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "categories_on_portfolios_pkey" PRIMARY KEY ("portfolioId","categoryId")
 );
@@ -55,6 +73,7 @@ DROP TABLE IF EXISTS "blogs";
 CREATE TABLE "blogs" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "title" TEXT NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'DRAFT',
     "summary" TEXT NOT NULL,
     "body" TEXT NOT NULL,
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -77,7 +96,7 @@ DROP TABLE IF EXISTS "categories_on_blogs";
 CREATE TABLE "categories_on_blogs" (
     "blogId" UUID NOT NULL,
     "categoryId" TEXT NOT NULL,
-    "assignedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "assignedAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "categories_on_blogs_pkey" PRIMARY KEY ("blogId","categoryId")
 );
