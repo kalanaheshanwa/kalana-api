@@ -35,6 +35,8 @@ module "cloudfront" {
   acm_certificate_frontend_arn            = module.acm.certificate_frontend_arn
   domain_frontend_aliases                 = module.acm.domain_frontend_aliases
   route53_zone_id                         = data.aws_route53_zone.root.zone_id
+  s3_uploads_id                           = module.s3.uploads_id
+  s3_uploads_bucket_regional_domain_name  = module.s3.uploads_bucket_regional_domain_name
 }
 
 module "dsql" {
@@ -46,10 +48,10 @@ module "dsql" {
 module "lambda" {
   source = "./modules/lambda"
 
-  project_namespace = var.project_namespace
-  env               = var.env
-  v_api             = var.v_api
-  dsql_cluster_arn  = module.dsql.cluster_arn
+  project_namespace     = var.project_namespace
+  env                   = var.env
+  v_api                 = var.v_api
+  dsql_cluster_arn      = module.dsql.cluster_arn
   dsql_connect_role_arn = module.dsql.role_arn
 
   NODE_ENV             = var.NODE_ENV
