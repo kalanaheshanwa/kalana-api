@@ -46,7 +46,15 @@ export class PortfolioService {
             .as('cats'),
         (join) => join.onTrue(),
       )
-      .select(['p.id', 'p.title', 'p.summary', 'p.createdAt', 'cats.combined as categories']);
+      .select([
+        'p.id',
+        'p.canonical',
+        'p.title',
+        'p.status',
+        'p.summary',
+        'p.createdAt',
+        'cats.combined as categories',
+      ]);
 
     if (input.after) {
       query = query.where('p.id', '>', input.after);

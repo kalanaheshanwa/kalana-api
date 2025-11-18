@@ -20,8 +20,10 @@ export interface BlogCategory {
 
 export interface Blog {
   body: string;
+  canonical: string;
   createdAt: Generated<Timestamp>;
   id: Generated<string>;
+  status: Generated<string>;
   summary: string;
   title: string;
   updatedAt: Timestamp;
@@ -49,6 +51,13 @@ export interface ContactSubmission {
   subject: string;
 }
 
+export interface DocStatus {
+  createdAt: Generated<Timestamp>;
+  description: string;
+  id: string;
+  updatedAt: Timestamp;
+}
+
 export interface PortfolioCategory {
   createdAt: Generated<Timestamp>;
   description: string;
@@ -58,8 +67,10 @@ export interface PortfolioCategory {
 
 export interface Portfolio {
   body: string;
+  canonical: string;
   createdAt: Generated<Timestamp>;
   id: Generated<string>;
+  status: Generated<string>;
   summary: string;
   title: string;
   updatedAt: Timestamp;
@@ -72,6 +83,7 @@ export interface DB {
   categories_on_blogs: CategoriesOnBlog;
   categories_on_portfolios: CategoriesOnPortfolio;
   contact_submissions: ContactSubmission;
+  doc_statuses: DocStatus;
   portfolio_categories: PortfolioCategory;
   portfolios: Portfolio;
 }

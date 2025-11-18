@@ -36,6 +36,7 @@ VALUES
 DROP TABLE IF EXISTS "portfolios";
 CREATE TABLE "portfolios" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "canonical" TEXT NOT NULL UNIQUE,
     "title" TEXT NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'DRAFT',
     "summary" TEXT NOT NULL,
@@ -72,6 +73,7 @@ CREATE INDEX ASYNC "categories_on_portfolios_categoryId_portfolioId_idx" ON "cat
 DROP TABLE IF EXISTS "blogs";
 CREATE TABLE "blogs" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "canonical" TEXT NOT NULL UNIQUE,
     "title" TEXT NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'DRAFT',
     "summary" TEXT NOT NULL,

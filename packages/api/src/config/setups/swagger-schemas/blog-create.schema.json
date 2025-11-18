@@ -1,7 +1,12 @@
 {
   "type": "object",
   "properties": {
+    "canonical": { "type": "string", "example": "the-life-of-a-show-girl" },
     "title": { "type": "string", "example": "The Life of a Show Girl" },
+    "status": {
+      "enum": ["PUBLISHED", "DRAFT"],
+      "example": "PUBLISHED"
+    },
     "summary": {
       "type": "string",
       "example": "The Life of a Showgirl is the twelfth studio album by the American singer-songwriter Taylor Swift. It was released on October 3, 2025, through Republic Records."
@@ -18,5 +23,5 @@
       "example": ["Business"]
     }
   },
-  "required": ["title", "summary", "body", "categories"]
+  "required": ["canonical", "title", "summary", "body", "categories"]
 }
