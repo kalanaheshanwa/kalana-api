@@ -1,8 +1,10 @@
 import { fromIni, fromNodeProviderChain, fromTemporaryCredentials } from '@aws-sdk/credential-providers';
 import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import type { AwsCredentialIdentityProvider } from '@aws-sdk/types';
+import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 import * as db from 'zapatos/db';
+import { DB } from '../../../generated/kysely/schema.js';
 import { Logger } from '../../utils/index.mjs';
 import { AppConfig } from '../app-config.mjs';
 
@@ -28,6 +30,7 @@ const logger = new Logger({ context: 'setup-db' });
 export interface DbSetupResult {
   pool: Pool;
   dispose: () => Promise<void>;
+  db: Kysely<DB>;
 }
 
 export async function setupDb(config: AppConfig): Promise<DbSetupResult> {
@@ -59,9 +62,17 @@ export async function setupDb(config: AppConfig): Promise<DbSetupResult> {
     process.kill(process.pid, 'SIGTERM');
   });
 
+  const dialect = new PostgresDialect({
+    pool,
+  });
+
   return {
     pool,
     dispose: () => pool.end(),
+    db: new Kysely<DB>({
+      dialect,
+      log: ['query', 'error'],
+    }),
   };
 }
 
@@ -78,7 +89,9 @@ async function buildTokenProvider(config: AppConfig): Promise<() => Promise<stri
 
 async function resolveAwsCredentials(config: AppConfig): Promise<AwsCredentialIdentityProvider> {
   if (config.APP_AWS_DB_CONNECT_ROLE_ARN) {
-    const masterCredentials = config.APP_AWS_PROFILE ? fromIni({ profile: config.APP_AWS_PROFILE }) : fromNodeProviderChain();
+    const masterCredentials = config.APP_AWS_PROFILE
+      ? fromIni({ profile: config.APP_AWS_PROFILE })
+      : fromNodeProviderChain();
     return fromTemporaryCredentials({
       masterCredentials,
       params: {

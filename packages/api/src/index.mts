@@ -11,11 +11,11 @@ const logger = new Logger({ context: 'main' });
 export async function main(config: AppConfig): Promise<Express> {
   const shutdownActions = new ShutdownActionsMiddleware();
 
-  const { pool, dispose } = await setupDb(config);
+  const { pool, dispose, db } = await setupDb(config);
 
   shutdownActions.push(dispose);
 
-  const context: AppContext = { config, pool };
+  const context: AppContext = { config, pool, db };
 
   const app = express();
   app.use(cors({ origin: config.CORS_ALLOWED_ORIGINS }));

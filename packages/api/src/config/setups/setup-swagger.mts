@@ -14,7 +14,7 @@ export function setupSwagger({ config }: AppContext) {
     definition: {
       openapi: '3.0.0',
       info: {
-        title: `Elvora Puzzle Store API (${config.NODE_ENV})`,
+        title: `Kalanah API (${config.NODE_ENV})`,
         version: '1.0.0',
       },
       components: {
