@@ -2,3 +2,4 @@
 
 generated/*
 !generated/zapatos
+!generated/kysely

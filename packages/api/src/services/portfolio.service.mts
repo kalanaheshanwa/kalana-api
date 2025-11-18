@@ -1,34 +1,37 @@
 import { sql } from 'kysely';
 import _ from 'lodash';
-import * as db from 'zapatos/db';
-import type * as s from 'zapatos/schema';
 import { PortfolioCategoryCreateSchema } from '../api/v1/portfolio/categories/schemas/index.mjs';
 import { PortfolioCreateSchema, PortfolioListQuerySchema } from '../api/v1/portfolio/schemas/index.mjs';
 import { AppContext } from '../types/index.mjs';
 import { pagination, withUpdated } from '../utils/index.mjs';
 
 export class PortfolioService {
-  readonly #pool: AppContext['pool'];
   readonly #db: AppContext['db'];
 
-  constructor({ pool, db }: AppContext) {
-    this.#pool = pool;
+  constructor({ db }: AppContext) {
     this.#db = db;
   }
 
-  create(data: PortfolioCreateSchema): Promise<s.portfolios.JSONSelectable> {
-    return db.transaction(this.#pool, db.IsolationLevel.RepeatableRead, async (txn) => {
-      const result = await db.insert('portfolios', withUpdated(_.omit(data, ['categories']))).run(txn);
+  create(input: PortfolioCreateSchema) {
+    return this.#db
+      .transaction()
+      .setIsolationLevel('repeatable read')
+      .execute(async (trx) => {
+        const result = await trx
+          .insertInto('portfolios')
+          .values(withUpdated(_.omit(input, ['categories'])))
+          .returningAll()
+          .executeTakeFirstOrThrow();
 
-      await db
-        .insert(
-          'categories_on_portfolios',
-          data.categories.map((c) => ({ portfolioId: result.id, categoryId: c })),
-        )
-        .run(txn);
+        // categories will always have a non-empty array - no validation needed here
+        let insertQuery = trx.insertInto('categories_on_portfolios');
+        for (const categoryId of input.categories) {
+          insertQuery = insertQuery.values({ portfolioId: result.id, categoryId });
+        }
+        await insertQuery.execute();
 
-      return result;
-    });
+        return result;
+      });
   }
 
   async list(input: PortfolioListQuerySchema) {
@@ -43,7 +46,7 @@ export class PortfolioService {
             .as('cats'),
         (join) => join.onTrue(),
       )
-      .select(['p.id', 'p.title', 'p.summary', 'p.createdAt', 'cats.combined']);
+      .select(['p.id', 'p.title', 'p.summary', 'p.createdAt', 'cats.combined as categories']);
 
     if (input.after) {
       query = query.where('p.id', '>', input.after);
@@ -58,13 +61,15 @@ export class PortfolioService {
     return pagination(await query.execute(), input.limit);
   }
 
-  createCategory(data: PortfolioCategoryCreateSchema): Promise<s.portfolio_categories.JSONSelectable> {
-    return db.insert('portfolio_categories', withUpdated(data)).run(this.#pool);
+  createCategory(data: PortfolioCategoryCreateSchema) {
+    return this.#db
+      .insertInto('portfolio_categories')
+      .values(withUpdated(data))
+      .returningAll()
+      .executeTakeFirstOrThrow();
   }
 
-  listCategories(): Promise<s.portfolio_categories.Selectable[]> {
-    return db.sql<s.portfolio_categories.SQL, s.portfolio_categories.Selectable[]>`
-        SELECT * FROM ${'portfolio_categories'}
-      `.run(this.#pool);
+  listCategories() {
+    return this.#db.selectFrom('portfolio_categories').selectAll().execute();
   }
 }

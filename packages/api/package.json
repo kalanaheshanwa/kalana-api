@@ -24,6 +24,9 @@
     "infra:up:build": "yarn load-vars podman compose -f ./docker-compose.yaml up --build -d",
     "infra:down": "yarn load-vars podman compose -f ./docker-compose.yaml down"
   },
+  "imports": {
+    "#kysely/types": "./generated/kysely/schema.d.ts"
+  },
   "devDependencies": {
     "@faker-js/faker": "^10.0.0",
     "@types/cors": "^2.8.19",

@@ -19,6 +19,7 @@ const config = getConfig();
     defaultSchemas: ['app_public'],
     includePattern: 'app_public.*',
     excludePattern: '__migrations',
+    singularize: true,
     dialect: getDialect('postgres'),
     db: new Kysely<DB>({
       dialect: new PostgresDialect({
