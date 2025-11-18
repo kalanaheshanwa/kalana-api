@@ -2,7 +2,7 @@ import cors from 'cors';
 import express, { ErrorRequestHandler, Express } from 'express';
 import api from './api/index.mjs';
 import { AppConfig } from './config/index.mjs';
-import { setupDb, setupSwagger } from './config/setups/index.mjs';
+import { setupAWSServices, setupDb, setupSwagger } from './config/setups/index.mjs';
 import { AppContext } from './types/index.mjs';
 import { AppError, Logger, ShutdownActionsMiddleware } from './utils/index.mjs';
 
@@ -12,10 +12,11 @@ export async function main(config: AppConfig): Promise<Express> {
   const shutdownActions = new ShutdownActionsMiddleware();
 
   const { pool, dispose, db } = await setupDb(config);
+  const { s3 } = await setupAWSServices(config);
 
   shutdownActions.push(dispose);
 
-  const context: AppContext = { config, pool, db };
+  const context: AppContext = { config, pool, db, s3 };
 
   const app = express();
   app.use(cors({ origin: config.CORS_ALLOWED_ORIGINS }));

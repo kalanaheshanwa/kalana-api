@@ -19,8 +19,10 @@ const schema = z.object({
   APP_USER: z.string(),
 
   APP_AWS_PROFILE: z.string().optional(),
+  APP_AWS_REGION: z.string(),
   APP_AWS_DB_REGION: z.string(),
-  APP_AWS_DB_CONNECT_ROLE_ARN: z.string().optional(),
+  APP_AWS_DB_CONNECT_ROLE_ARN: z.string(),
+  APP_AWS_UPLOADS_S3_BUCKET_NAME: z.string(),
 });
 
 interface ExtendedAppConfig {

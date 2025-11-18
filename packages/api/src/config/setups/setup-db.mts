@@ -1,12 +1,11 @@
-import { fromIni, fromNodeProviderChain, fromTemporaryCredentials } from '@aws-sdk/credential-providers';
 import { DsqlSigner } from '@aws-sdk/dsql-signer';
-import type { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 import * as db from 'zapatos/db';
 import { DB } from '../../../generated/kysely/schema.js';
 import { Logger } from '../../utils/index.mjs';
 import { AppConfig } from '../app-config.mjs';
+import { resolveAwsCredentials } from './utils.mjs';
 
 // Sets a max overall life for the connection.
 // A value of 60 would evict connections that have been around for over 60 seconds,
@@ -77,7 +76,7 @@ export async function setupDb(config: AppConfig): Promise<DbSetupResult> {
 }
 
 async function buildTokenProvider(config: AppConfig): Promise<() => Promise<string>> {
-  const credentials = await resolveAwsCredentials(config);
+  const credentials = await resolveAwsCredentials(config, 'db-assume');
   const signer = new DsqlSigner({
     hostname: config.POSTGRES_HOST,
     region: config.APP_AWS_DB_REGION,
@@ -85,25 +84,4 @@ async function buildTokenProvider(config: AppConfig): Promise<() => Promise<stri
   });
 
   return () => signer.getDbConnectAuthToken();
-}
-
-async function resolveAwsCredentials(config: AppConfig): Promise<AwsCredentialIdentityProvider> {
-  if (config.APP_AWS_DB_CONNECT_ROLE_ARN) {
-    const masterCredentials = config.APP_AWS_PROFILE
-      ? fromIni({ profile: config.APP_AWS_PROFILE })
-      : fromNodeProviderChain();
-    return fromTemporaryCredentials({
-      masterCredentials,
-      params: {
-        RoleArn: config.APP_AWS_DB_CONNECT_ROLE_ARN,
-        RoleSessionName: 'aurora-dsql-connect',
-      },
-    });
-  }
-
-  if (config.APP_AWS_PROFILE) {
-    return fromIni({ profile: config.APP_AWS_PROFILE });
-  }
-
-  return fromNodeProviderChain();
 }
