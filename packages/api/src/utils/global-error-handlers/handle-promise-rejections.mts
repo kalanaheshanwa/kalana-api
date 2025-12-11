@@ -2,7 +2,7 @@ import { Logger } from '../logger/index.mjs';
 
 export function handlePromiseRejections(
   logger: Logger,
-  exit: boolean = false,
+  exit: boolean = true,
   callback?: () => void,
 ): NodeJS.UnhandledRejectionListener {
   return function (reason: unknown, promise: Promise<unknown>): void {

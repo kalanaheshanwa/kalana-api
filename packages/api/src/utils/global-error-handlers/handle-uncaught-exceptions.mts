@@ -2,7 +2,7 @@ import { Logger } from '../logger/index.mjs';
 
 export function handleUncaughtExceptions(
   logger: Logger,
-  exit: boolean = false,
+  exit: boolean = true,
   callback?: () => void,
 ): NodeJS.UncaughtExceptionListener {
   return function (error: Error, origin: NodeJS.UncaughtExceptionOrigin): void {

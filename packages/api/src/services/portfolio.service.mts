@@ -34,6 +34,32 @@ export class PortfolioService {
       });
   }
 
+  update(id: string, input: Partial<PortfolioCreateSchema>) {
+    return this.#db
+      .transaction()
+      .setIsolationLevel('repeatable read')
+      .execute(async (trx) => {
+        const result = await trx
+          .updateTable('portfolios')
+          .set(_.omit(input, ['categories']))
+          .where('id', '=', id)
+          .returningAll()
+          .executeTakeFirstOrThrow();
+
+        if (input.categories) {
+          await trx.deleteFrom('categories_on_portfolios').where('portfolioId', '=', result.id).execute();
+          // categories will always have a non-empty array - no validation needed here
+          let insertQuery = trx.insertInto('categories_on_portfolios');
+          for (const categoryId of input.categories) {
+            insertQuery = insertQuery.values({ portfolioId: result.id, categoryId });
+          }
+          await insertQuery.execute();
+        }
+
+        return result;
+      });
+  }
+
   async list(input: PortfolioListQuerySchema) {
     let query = this.#db
       .selectFrom('portfolios as p')

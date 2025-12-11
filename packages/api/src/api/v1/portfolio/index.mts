@@ -3,7 +3,7 @@ import { asyncMiddleware, validateSchema } from '../../../middleware/index.mjs';
 import { PortfolioService } from '../../../services/index.mjs';
 import { AppContext } from '../../../types/index.mjs';
 import categories from './categories/index.mjs';
-import { createSchema, listQuerySchema, PortfolioListQuerySchema } from './schemas/index.mjs';
+import { createSchema, listQuerySchema, PortfolioListQuerySchema, updateSchema } from './schemas/index.mjs';
 
 const router = Router();
 
@@ -77,6 +77,39 @@ export default function (context: AppContext): Router {
     validateSchema(createSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.create(req.body);
+
+      return res.status(201).json({ data });
+    }),
+  );
+
+  /**
+   * @openapi
+   * /api/v1/portfolios/{id}:
+   *   put:
+   *     tags:
+   *       - Portfolio
+   *     summary: Updates a portfolio
+   *     parameters:
+   *       - name: id
+   *         in: path
+   *         description: Id of the item to update
+   *         required: true
+   *         schema:
+   *           type: string
+   *     requestBody:
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: "#/components/schemas/PortfolioCreate"
+   *     responses:
+   *       201:
+   *         description: Updates an entry in portfolios
+   */
+  router.put(
+    '/:id',
+    validateSchema(updateSchema),
+    asyncMiddleware(async (req, res) => {
+      const data = await _portfolio.update(req.params.id, req.body);
 
       return res.status(201).json({ data });
     }),

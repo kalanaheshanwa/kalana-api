@@ -11,7 +11,7 @@ const statements: string[] = [
   /* SQL */ `SET search_path TO ${schemaQ}`,
   /* SQL */ `GRANT USAGE ON SCHEMA ${schemaQ} TO ${appUserQ}`,
   // Existing objects in the schema (tables/views)
-  /* SQL */ `GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA ${schemaQ} TO ${appUserQ}`,
+  /* SQL */ `GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA ${schemaQ} TO ${appUserQ}`,
   // If you need DELETE, uncomment:
   // /* SQL */`GRANT DELETE ON ALL TABLES IN SCHEMA ${schemaQ} TO ${appUserQ}`
 ];
