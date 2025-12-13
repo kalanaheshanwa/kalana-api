@@ -1,5 +1,5 @@
 import { getConfig } from '../config.mts';
-import { newClient } from '../libs/dsql.mts';
+import { newClient } from './libs/dsql.mts';
 import { replacePlaceholders } from './libs/index.mjs';
 
 // Aurora DB statements

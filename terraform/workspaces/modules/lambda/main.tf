@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "lambda_permissions" {
       "s3:PutObject",
     ]
     resources = [
-      var.s3_uploads_arn,
+      "${var.s3_uploads_arn}/*",
     ]
   }
 

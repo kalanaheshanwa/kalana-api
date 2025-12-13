@@ -1,6 +1,7 @@
 import { fromIni, fromTemporaryCredentials } from '@aws-sdk/credential-providers';
 import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import { createHash } from 'node:crypto';
+import { lookup } from 'node:dns/promises';
 import { Client } from 'pg';
 import { ConfigValue } from '../../config.mts';
 
@@ -32,6 +33,7 @@ export async function getAwsCredentials(mode: CredentialMode) {
 }
 
 export async function newClient(config: ConfigValue, role: 'admin' | 'owner' | 'user') {
+  const host = await resolveHost(config.POSTGRES_HOST);
   const signer = new DsqlSigner({
     hostname: config.POSTGRES_HOST,
     region: config.APP_AWS_DB_REGION,
@@ -48,12 +50,12 @@ export async function newClient(config: ConfigValue, role: 'admin' | 'owner' | '
   const token = await (role === 'admin' ? signer.getDbConnectAdminAuthToken() : signer.getDbConnectAuthToken());
 
   const client = new Client({
-    host: config.POSTGRES_HOST,
+    host,
     port: config.POSTGRES_PORT,
     database: config.POSTGRES_DB,
     user: role === 'admin' ? config.POSTGRES_USER : role === 'owner' ? config.APP_OWNER : config.APP_USER,
     password: token,
-    ssl: { rejectUnauthorized: true },
+    ssl: { rejectUnauthorized: true, servername: config.POSTGRES_HOST },
     keepAlive: true,
   });
   await client.connect();
@@ -62,4 +64,14 @@ export async function newClient(config: ConfigValue, role: 'admin' | 'owner' | '
 
 export function sha256(input: string | Buffer) {
   return createHash('sha256').update(input).digest('hex');
+}
+
+async function resolveHost(hostname: string): Promise<string> {
+  try {
+    const { address } = await lookup(hostname, { family: 4 });
+    return address;
+  } catch (error) {
+    console.warn('Failed IPv4 lookup for database host, falling back to hostname', { hostname, error });
+    return hostname;
+  }
 }
