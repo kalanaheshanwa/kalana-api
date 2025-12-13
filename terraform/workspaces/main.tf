@@ -53,14 +53,17 @@ module "lambda" {
   v_api                 = var.v_api
   dsql_cluster_arn      = module.dsql.cluster_arn
   dsql_connect_role_arn = module.dsql.role_arn
+  s3_uploads_arn        = module.s3.uploads_arn
 
-  NODE_ENV             = var.NODE_ENV
-  CORS_ALLOWED_ORIGINS = var.CORS_ALLOWED_ORIGINS
-  POSTGRES_DB          = var.POSTGRES_DB
-  POSTGRES_PORT        = var.POSTGRES_PORT
-  POSTGRES_HOST        = var.POSTGRES_HOST
-  APP_USER             = var.APP_USER
-  APP_AWS_DB_REGION    = var.APP_AWS_DB_REGION
+  NODE_ENV                       = var.NODE_ENV
+  CORS_ALLOWED_ORIGINS           = var.CORS_ALLOWED_ORIGINS
+  POSTGRES_DB                    = var.POSTGRES_DB
+  POSTGRES_PORT                  = var.POSTGRES_PORT
+  POSTGRES_HOST                  = var.POSTGRES_HOST
+  APP_USER                       = var.APP_USER
+  APP_AWS_DB_REGION              = var.APP_AWS_DB_REGION
+  APP_AWS_REGION                 = var.APP_AWS_REGION
+  APP_AWS_UPLOADS_S3_BUCKET_NAME = var.APP_AWS_UPLOADS_S3_BUCKET_NAME
 }
 
 module "api_gateway" {

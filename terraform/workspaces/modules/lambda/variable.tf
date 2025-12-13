@@ -23,6 +23,11 @@ variable "dsql_connect_role_arn" {
   description = "ARN of the IAM role that has been granted Aurora DSQL DbConnect access"
 }
 
+variable "s3_uploads_arn" {
+  type        = string
+  description = "ARN of the S3 bucket for uploads"
+}
+
 # lambda env
 variable "NODE_ENV" {
   type        = string
@@ -51,4 +56,12 @@ variable "APP_USER" {
 variable "APP_AWS_DB_REGION" {
   type        = string
   description = "Lambda env variable APP_AWS_DB_REGION"
+}
+variable "APP_AWS_REGION" {
+  type        = string
+  description = "Lambda env variable APP_AWS_REGION"
+}
+variable "APP_AWS_UPLOADS_S3_BUCKET_NAME" {
+  type        = string
+  description = "Lambda env variable APP_AWS_UPLOADS_S3_BUCKET_NAME"
 }

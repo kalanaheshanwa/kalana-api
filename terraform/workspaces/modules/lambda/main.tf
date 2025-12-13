@@ -19,6 +19,16 @@ data "aws_iam_policy_document" "lambda_permissions" {
   statement {
     effect = "Allow"
     actions = [
+      "s3:PutObject",
+    ]
+    resources = [
+      var.s3_uploads_arn,
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
@@ -78,15 +88,17 @@ resource "aws_lambda_function" "handler" {
 
   environment {
     variables = {
-      "NODE_ENV"                    = var.NODE_ENV
-      "PORT"                        = "3000" # fake port (unused)
-      "CORS_ALLOWED_ORIGINS"        = var.CORS_ALLOWED_ORIGINS
-      "POSTGRES_DB"                 = var.POSTGRES_DB
-      "POSTGRES_PORT"               = var.POSTGRES_PORT
-      "POSTGRES_HOST"               = var.POSTGRES_HOST
-      "APP_USER"                    = var.APP_USER
-      "APP_AWS_DB_REGION"           = var.APP_AWS_DB_REGION
-      "APP_AWS_DB_CONNECT_ROLE_ARN" = var.dsql_connect_role_arn
+      "NODE_ENV"                       = var.NODE_ENV
+      "PORT"                           = "3000" # fake port (unused)
+      "CORS_ALLOWED_ORIGINS"           = var.CORS_ALLOWED_ORIGINS
+      "POSTGRES_DB"                    = var.POSTGRES_DB
+      "POSTGRES_PORT"                  = var.POSTGRES_PORT
+      "POSTGRES_HOST"                  = var.POSTGRES_HOST
+      "APP_USER"                       = var.APP_USER
+      "APP_AWS_DB_REGION"              = var.APP_AWS_DB_REGION
+      "APP_AWS_REGION"                 = var.APP_AWS_REGION
+      "APP_AWS_UPLOADS_S3_BUCKET_NAME" = var.APP_AWS_UPLOADS_S3_BUCKET_NAME
+      "APP_AWS_DB_CONNECT_ROLE_ARN"    = var.dsql_connect_role_arn
     }
   }
 }

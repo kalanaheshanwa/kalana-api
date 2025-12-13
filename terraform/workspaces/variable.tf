@@ -52,3 +52,11 @@ variable "APP_AWS_DB_REGION" {
   type        = string
   description = "Lambda env variable APP_AWS_DB_REGION"
 }
+variable "APP_AWS_REGION" {
+  type        = string
+  description = "Lambda env variable APP_AWS_REGION"
+}
+variable "APP_AWS_UPLOADS_S3_BUCKET_NAME" {
+  type        = string
+  description = "Lambda env variable APP_AWS_UPLOADS_S3_BUCKET_NAME"
+}
