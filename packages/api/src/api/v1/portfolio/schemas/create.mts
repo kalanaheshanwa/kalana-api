@@ -12,16 +12,6 @@ export const createSchema = z.object({
 
 export type PortfolioCreateSchema = z.infer<typeof createSchema>;
 
-export const updateSchema = z
-  .object({
-    canonical: z.string().max(100),
-    title: z.string().max(50),
-    status: z.enum(['PUBLISHED', 'DRAFT']).optional(),
-    summary: z.string().max(250),
-    body: z.string().max(10_000),
-    websiteUrl: z.string().url(),
-    categories: z.string().max(50).array().nonempty(),
-  })
-  .partial();
+export const updateSchema = createSchema.partial();
 
 export type PortfolioUpdateSchema = z.infer<typeof updateSchema>;

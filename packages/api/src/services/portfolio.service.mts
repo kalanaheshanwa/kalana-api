@@ -39,24 +39,27 @@ export class PortfolioService {
       .transaction()
       .setIsolationLevel('repeatable read')
       .execute(async (trx) => {
-        const result = await trx
-          .updateTable('portfolios')
-          .set(_.omit(input, ['categories']))
-          .where('id', '=', id)
-          .returningAll()
-          .executeTakeFirstOrThrow();
+        const updatable = _.omit(input, ['categories']);
+        if (Object.keys(updatable).length) {
+          await trx
+            .updateTable('portfolios')
+            .set(updatable)
+            .where('id', '=', id)
+            .returningAll()
+            .executeTakeFirstOrThrow();
+        }
 
         if (input.categories) {
-          await trx.deleteFrom('categories_on_portfolios').where('portfolioId', '=', result.id).execute();
+          await trx.deleteFrom('categories_on_portfolios').where('portfolioId', '=', id).execute();
           // categories will always have a non-empty array - no validation needed here
           let insertQuery = trx.insertInto('categories_on_portfolios');
           for (const categoryId of input.categories) {
-            insertQuery = insertQuery.values({ portfolioId: result.id, categoryId });
+            insertQuery = insertQuery.values({ portfolioId: id, categoryId });
           }
           await insertQuery.execute();
         }
 
-        return result;
+        return trx.selectFrom('blogs').selectAll().where('id', '=', id).executeTakeFirstOrThrow();
       });
   }
 
