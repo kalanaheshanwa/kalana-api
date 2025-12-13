@@ -1,5 +1,6 @@
 import { DsqlSigner } from '@aws-sdk/dsql-signer';
 import { Kysely, PostgresDialect } from 'kysely';
+import { lookup } from 'node:dns/promises';
 import { Pool } from 'pg';
 import * as db from 'zapatos/db';
 import { DB } from '../../../generated/kysely/schema.js';
@@ -18,7 +19,11 @@ const CONNECTION_TIMEOUT_MS = 10_000;
 // number of milliseconds a client must sit idle in the pool and not be checked out
 // before it is disconnected from the backend and discarded
 // default is 10000 (10 seconds) - set to 0 to disable auto-disconnection of idle clients
-const IDLE_TIMEOUT_MS = 30_000;
+const IDLE_TIMEOUT_MS = 0;
+// enable TCP keepalive so the connection stays active through the AWS DSQL/NLB idle window
+const KEEP_ALIVE = true;
+// kick off keepalive probes early (default OS value is ~2 hours which is too high for AWS NLBs ~5–6 minute idle timeout)
+const KEEP_ALIVE_INITIAL_DELAY_MS = 10_000;
 
 const TRANSACTION_MAX_ATTEMPTS = 5;
 const TRANSACTION_DELAY_MAX_MS = 250;
@@ -34,6 +39,7 @@ export interface DbSetupResult {
 
 export async function setupDb(config: AppConfig): Promise<DbSetupResult> {
   const passwordProvider = await buildTokenProvider(config);
+  const host = await resolveHost(config.POSTGRES_HOST);
 
   db.setConfig({
     transactionAttemptsMax: TRANSACTION_MAX_ATTEMPTS,
@@ -45,7 +51,7 @@ export async function setupDb(config: AppConfig): Promise<DbSetupResult> {
   });
 
   const pool = new Pool({
-    host: config.POSTGRES_HOST,
+    host,
     port: config.POSTGRES_PORT,
     database: config.POSTGRES_DB,
     connectionTimeoutMillis: CONNECTION_TIMEOUT_MS,
@@ -53,7 +59,10 @@ export async function setupDb(config: AppConfig): Promise<DbSetupResult> {
     maxLifetimeSeconds: MAX_CONN_LIFETIME_SECONDS,
     user: config.APP_USER,
     password: passwordProvider,
-    ssl: { rejectUnauthorized: true },
+    // use original hostname for TLS SNI even if we connect via resolved IPv4 to avoid cert CN mismatch
+    ssl: { rejectUnauthorized: true, servername: config.POSTGRES_HOST },
+    keepAlive: KEEP_ALIVE, // prevent idle sockets from being trimmed by the network and timing out on reuse
+    keepAliveInitialDelayMillis: KEEP_ALIVE_INITIAL_DELAY_MS,
   });
 
   pool.on('error', (error) => {
@@ -84,4 +93,14 @@ async function buildTokenProvider(config: AppConfig): Promise<() => Promise<stri
   });
 
   return () => signer.getDbConnectAuthToken();
+}
+
+async function resolveHost(hostname: string): Promise<string> {
+  try {
+    const { address } = await lookup(hostname, { family: 4 });
+    return address;
+  } catch (error) {
+    logger.warn('Failed IPv4 lookup for database host, falling back to hostname', { hostname, error });
+    return hostname;
+  }
 }

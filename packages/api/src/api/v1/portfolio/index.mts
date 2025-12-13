@@ -85,6 +85,33 @@ export default function (context: AppContext): Router {
   /**
    * @openapi
    * /api/v1/portfolios/{id}:
+   *   get:
+   *     tags:
+   *       - Portfolio
+   *     summary: Get a portfolio
+   *     parameters:
+   *       - name: id
+   *         in: path
+   *         description: Id of the item to update
+   *         required: true
+   *         schema:
+   *           type: string
+   *     responses:
+   *       201:
+   *         description: Get an entry in portfolios
+   */
+  router.get(
+    '/:id',
+    asyncMiddleware(async (req, res) => {
+      const data = await _portfolio.getById(req.params.id);
+
+      return res.status(200).json({ data });
+    }),
+  );
+
+  /**
+   * @openapi
+   * /api/v1/portfolios/{id}:
    *   put:
    *     tags:
    *       - Portfolio
@@ -111,7 +138,7 @@ export default function (context: AppContext): Router {
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.update(req.params.id, req.body);
 
-      return res.status(201).json({ data });
+      return res.status(200).json({ data });
     }),
   );
 

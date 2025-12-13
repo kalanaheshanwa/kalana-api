@@ -95,6 +95,33 @@ export class PortfolioService {
     return pagination(await query.execute(), input.limit);
   }
 
+  getById(id: string) {
+    return this.#db
+      .selectFrom('portfolios as p')
+      .leftJoinLateral(
+        (eb) =>
+          eb
+            .selectFrom('categories_on_portfolios as cop')
+            .select(({ fn }) => [fn.agg<string[]>('array_agg', ['cop.categoryId']).as('combined')])
+            .whereRef('cop.portfolioId', '=', 'p.id')
+            .as('cats'),
+        (join) => join.onTrue(),
+      )
+      .select([
+        'p.id',
+        'p.canonical',
+        'p.title',
+        'p.status',
+        'p.summary',
+        'p.websiteUrl',
+        'p.body',
+        'p.createdAt',
+        'cats.combined as categories',
+      ])
+      .where('id', '=', id)
+      .executeTakeFirst();
+  }
+
   createCategory(data: PortfolioCategoryCreateSchema) {
     return this.#db
       .insertInto('portfolio_categories')
