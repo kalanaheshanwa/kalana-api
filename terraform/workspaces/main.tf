@@ -77,3 +77,14 @@ module "api_gateway" {
   lambda_main_invoke_arn    = module.lambda.lambda_main_invoke_arn
   lambda_main_function_name = module.lambda.lambda_main_function_name
 }
+
+module "cognito" {
+  source = "./modules/cognito"
+
+  project_namespace    = var.project_namespace
+  environment          = var.env
+  callback_urls        = var.cognito_callback_urls
+  logout_urls          = var.cognito_logout_urls
+  super_admin_username = var.cognito_super_admin_username
+  super_admin_password = var.cognito_super_admin_password
+}

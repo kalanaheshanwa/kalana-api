@@ -23,6 +23,26 @@ variable "v_api" {
   type        = string
 }
 
+variable "cognito_callback_urls" {
+  type        = list(string)
+  description = "List of allowed callback urls"
+}
+
+variable "cognito_logout_urls" {
+  type        = list(string)
+  description = "List of allowed logout urls"
+}
+
+variable "cognito_super_admin_username" {
+  type        = string
+  description = "Username of the super admin"
+}
+
+variable "cognito_super_admin_password" {
+  type        = string
+  description = "Password of the super admin"
+}
+
 # lambda env
 variable "NODE_ENV" {
   type        = string
