@@ -28,6 +28,11 @@ variable "s3_uploads_arn" {
   description = "ARN of the S3 bucket for uploads"
 }
 
+variable "s3_uploads_id" {
+  type        = string
+  description = "Name/Id of the S3 bucket for uploads"
+}
+
 # lambda env
 variable "NODE_ENV" {
   type        = string
@@ -60,8 +65,4 @@ variable "APP_AWS_DB_REGION" {
 variable "APP_AWS_REGION" {
   type        = string
   description = "Lambda env variable APP_AWS_REGION"
-}
-variable "APP_AWS_UPLOADS_S3_BUCKET_NAME" {
-  type        = string
-  description = "Lambda env variable APP_AWS_UPLOADS_S3_BUCKET_NAME"
 }
