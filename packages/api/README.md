@@ -1,7 +1,7 @@
 Login with cli client
 
 ```sh
-aws cognito-idp initiate-auth --region ap-southeast-1 --auth-flow USER_PASSWORD_AUTH --client-id <clientid> --auth-parameters USERNAME=<email>,PASSWORD=<password>
+aws cognito-idp initiate-auth --region us-east-1 --auth-flow USER_PASSWORD_AUTH --client-id 6ch441oc778feoe2uae71k2n9k --auth-parameters USERNAME=achinthamadumal@gmail.com,PASSWORD=<password>
 ```
 
 Generate AWS Aurora DSQL token for non admin user

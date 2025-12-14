@@ -23,6 +23,13 @@ const schema = z.object({
   APP_AWS_DB_REGION: z.string(),
   APP_AWS_DB_CONNECT_ROLE_ARN: z.string(),
   APP_AWS_UPLOADS_S3_BUCKET_NAME: z.string(),
+  APP_AWS_COGNITO_JWKS_TIMEOUT_MS: z.coerce.number().int().positive().min(1_000).default(10_000),
+
+  APP_AWS_COGNITO_USER_POOL_ID: z.string(),
+  APP_AWS_COGNITO_CLIENT_IDS: z
+    .string()
+    .transform((arg) => arg.split(','))
+    .pipe(z.string().trim().nonempty().array().nonempty()),
 });
 
 interface ExtendedAppConfig {

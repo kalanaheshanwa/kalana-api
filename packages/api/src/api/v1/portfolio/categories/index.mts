@@ -15,6 +15,8 @@ export default function (context: AppContext): Router {
    *   get:
    *     tags:
    *       - Portfolio
+   *     security:
+   *       - bearerAuth: []
    *     summary: List all portfolio categories paginated
    *     responses:
    *       201:
@@ -35,6 +37,8 @@ export default function (context: AppContext): Router {
    *   post:
    *     tags:
    *       - Portfolio
+   *     security:
+   *       - bearerAuth: []
    *     summary: Creates a portfolio category
    *     requestBody:
    *       content:

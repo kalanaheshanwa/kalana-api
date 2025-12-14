@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncMiddleware, validateSchema } from '../../../middleware/index.mjs';
+import { asyncMiddleware, isAuthenticated, validateSchema } from '../../../middleware/index.mjs';
 import { PortfolioService } from '../../../services/index.mjs';
 import { AppContext } from '../../../types/index.mjs';
 import categories from './categories/index.mjs';
@@ -10,7 +10,7 @@ const router = Router();
 export default function (context: AppContext): Router {
   const _portfolio = new PortfolioService(context);
 
-  router.use('/categories', categories(context));
+  router.use('/categories', isAuthenticated(context), categories(context));
 
   /**
    * @openapi
@@ -62,6 +62,8 @@ export default function (context: AppContext): Router {
    *   post:
    *     tags:
    *       - Portfolio
+   *     security:
+   *       - bearerAuth: []
    *     summary: Creates a portfolio
    *     requestBody:
    *       content:
@@ -74,6 +76,7 @@ export default function (context: AppContext): Router {
    */
   router.post(
     '/',
+    isAuthenticated(context),
     validateSchema(createSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.create(req.body);
@@ -88,6 +91,8 @@ export default function (context: AppContext): Router {
    *   get:
    *     tags:
    *       - Portfolio
+   *     security:
+   *       - bearerAuth: []
    *     summary: Get a portfolio
    *     parameters:
    *       - name: id
@@ -102,6 +107,7 @@ export default function (context: AppContext): Router {
    */
   router.get(
     '/:id',
+    isAuthenticated(context),
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.getById(req.params.id);
 
@@ -115,6 +121,8 @@ export default function (context: AppContext): Router {
    *   put:
    *     tags:
    *       - Portfolio
+   *     security:
+   *       - bearerAuth: []
    *     summary: Updates a portfolio
    *     parameters:
    *       - name: id
@@ -134,6 +142,7 @@ export default function (context: AppContext): Router {
    */
   router.put(
     '/:id',
+    isAuthenticated(context),
     validateSchema(updateSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.update(req.params.id, req.body);

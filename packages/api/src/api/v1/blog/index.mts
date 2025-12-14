@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncMiddleware, validateSchema } from '../../../middleware/index.mjs';
+import { asyncMiddleware, isAuthenticated, validateSchema } from '../../../middleware/index.mjs';
 import { BlogService } from '../../../services/index.mjs';
 import { AppContext } from '../../../types/index.mjs';
 import categories from './categories/index.mjs';
@@ -10,7 +10,7 @@ const router = Router();
 export default function (context: AppContext): Router {
   const _blog = new BlogService(context);
 
-  router.use('/categories', categories(context));
+  router.use('/categories', isAuthenticated(context), categories(context));
 
   /**
    * @openapi
@@ -62,6 +62,8 @@ export default function (context: AppContext): Router {
    *   post:
    *     tags:
    *       - Blog
+   *     security:
+   *       - bearerAuth: []
    *     summary: Creates a blog
    *     requestBody:
    *       content:
@@ -74,6 +76,7 @@ export default function (context: AppContext): Router {
    */
   router.post(
     '/',
+    isAuthenticated(context),
     validateSchema(createSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _blog.create(req.body);
@@ -88,6 +91,8 @@ export default function (context: AppContext): Router {
    *   get:
    *     tags:
    *       - Blog
+   *     security:
+   *       - bearerAuth: []
    *     summary: Get a blog
    *     parameters:
    *       - name: id
@@ -102,6 +107,7 @@ export default function (context: AppContext): Router {
    */
   router.get(
     '/:id',
+    isAuthenticated(context),
     asyncMiddleware(async (req, res) => {
       const data = await _blog.getById(req.params.id);
 
@@ -115,6 +121,8 @@ export default function (context: AppContext): Router {
    *   put:
    *     tags:
    *       - Blog
+   *     security:
+   *       - bearerAuth: []
    *     summary: Updates a blog
    *     parameters:
    *       - name: id
@@ -134,6 +142,7 @@ export default function (context: AppContext): Router {
    */
   router.put(
     '/:id',
+    isAuthenticated(context),
     validateSchema(updateSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _blog.update(req.params.id, req.body);

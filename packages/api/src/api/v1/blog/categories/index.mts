@@ -15,6 +15,8 @@ export default function (context: AppContext): Router {
    *   get:
    *     tags:
    *       - Blog
+   *     security:
+   *       - bearerAuth: []
    *     summary: List all blog categories paginated
    *     responses:
    *       201:
@@ -35,6 +37,8 @@ export default function (context: AppContext): Router {
    *   post:
    *     tags:
    *       - Blog
+   *     security:
+   *       - bearerAuth: []
    *     summary: Creates a blog category
    *     requestBody:
    *       content:
