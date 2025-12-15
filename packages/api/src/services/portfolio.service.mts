@@ -1,5 +1,6 @@
-import { sql } from 'kysely';
+import { Kysely, sql, Transaction } from 'kysely';
 import _ from 'lodash';
+import { DB } from '../../generated/kysely/schema.js';
 import { PortfolioCategoryCreateSchema } from '../api/v1/portfolio/categories/schemas/index.mjs';
 import { PortfolioCreateSchema, PortfolioListQuerySchema } from '../api/v1/portfolio/schemas/index.mjs';
 import { AppContext } from '../types/index.mjs';
@@ -20,17 +21,16 @@ export class PortfolioService {
         const result = await trx
           .insertInto('portfolios')
           .values(withUpdated(_.omit(input, ['categories'])))
-          .returningAll()
+          .returning(['id'])
           .executeTakeFirstOrThrow();
 
         // categories will always have a non-empty array - no validation needed here
-        let insertQuery = trx.insertInto('categories_on_portfolios');
-        for (const categoryId of input.categories) {
-          insertQuery = insertQuery.values({ portfolioId: result.id, categoryId });
-        }
-        await insertQuery.execute();
+        await trx
+          .insertInto('categories_on_portfolios')
+          .values(input.categories.map((c) => ({ portfolioId: result.id, categoryId: c })))
+          .execute();
 
-        return result;
+        return this.getById(result.id, trx);
       });
   }
 
@@ -40,6 +40,7 @@ export class PortfolioService {
       .setIsolationLevel('repeatable read')
       .execute(async (trx) => {
         const updatable = _.omit(input, ['categories']);
+
         if (Object.keys(updatable).length) {
           await trx
             .updateTable('portfolios')
@@ -52,14 +53,13 @@ export class PortfolioService {
         if (input.categories) {
           await trx.deleteFrom('categories_on_portfolios').where('portfolioId', '=', id).execute();
           // categories will always have a non-empty array - no validation needed here
-          let insertQuery = trx.insertInto('categories_on_portfolios');
-          for (const categoryId of input.categories) {
-            insertQuery = insertQuery.values({ portfolioId: id, categoryId });
-          }
-          await insertQuery.execute();
+          await trx
+            .insertInto('categories_on_portfolios')
+            .values(input.categories.map((c) => ({ portfolioId: id, categoryId: c })))
+            .execute();
         }
 
-        return trx.selectFrom('blogs').selectAll().where('id', '=', id).executeTakeFirstOrThrow();
+        return this.getById(id, trx);
       });
   }
 
@@ -98,8 +98,8 @@ export class PortfolioService {
     return pagination(await query.execute(), input.limit);
   }
 
-  getById(id: string) {
-    return this.#db
+  getById(id: string, trx: Transaction<DB> | Kysely<DB> = this.#db) {
+    return trx
       .selectFrom('portfolios as p')
       .leftJoinLateral(
         (eb) =>

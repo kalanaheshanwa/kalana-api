@@ -27,11 +27,10 @@ export class BlogService {
           .executeTakeFirstOrThrow();
 
         // categories will always have a non-empty array - no validation needed here
-        let insertQuery = trx.insertInto('categories_on_blogs');
-        for (const categoryId of input.categories) {
-          insertQuery = insertQuery.values({ blogId: result.id, categoryId });
-        }
-        await insertQuery.execute();
+        await trx
+          .insertInto('categories_on_blogs')
+          .values(input.categories.map((c) => ({ blogId: result.id, categoryId: c })))
+          .execute();
 
         return result;
       });
@@ -50,11 +49,10 @@ export class BlogService {
         if (input.categories) {
           await trx.deleteFrom('categories_on_blogs').where('blogId', '=', id).execute();
           // categories will always have a non-empty array - no validation needed here
-          let insertQuery = trx.insertInto('categories_on_blogs');
-          for (const categoryId of input.categories) {
-            insertQuery = insertQuery.values({ blogId: id, categoryId });
-          }
-          await insertQuery.execute();
+          await trx
+            .insertInto('categories_on_blogs')
+            .values(input.categories.map((c) => ({ blogId: id, categoryId: c })))
+            .execute();
         }
 
         return trx.selectFrom('blogs').selectAll().where('id', '=', id).executeTakeFirstOrThrow();

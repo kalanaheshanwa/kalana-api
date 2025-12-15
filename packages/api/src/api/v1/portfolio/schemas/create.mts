@@ -5,7 +5,7 @@ export const createSchema = z.object({
   title: z.string().max(50),
   status: z.enum(['PUBLISHED', 'DRAFT']).optional(),
   summary: z.string().max(250),
-  body: z.string().max(10_000),
+  body: z.string(),
   websiteUrl: z.string().url(),
   categories: z.string().max(50).array().nonempty(),
 });
