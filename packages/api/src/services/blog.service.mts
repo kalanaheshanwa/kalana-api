@@ -1,4 +1,5 @@
-import { sql } from 'kysely';
+import { DB } from '#kysely/types';
+import { Kysely, sql, Transaction } from 'kysely';
 import _ from 'lodash';
 import * as db from 'zapatos/db';
 import type * as s from 'zapatos/schema';
@@ -32,7 +33,7 @@ export class BlogService {
           .values(input.categories.map((c) => ({ blogId: result.id, categoryId: c })))
           .execute();
 
-        return result;
+        return this.getById(result.id);
       });
   }
 
@@ -55,7 +56,7 @@ export class BlogService {
             .execute();
         }
 
-        return trx.selectFrom('blogs').selectAll().where('id', '=', id).executeTakeFirstOrThrow();
+        return this.getById(id);
       });
   }
 
@@ -94,8 +95,8 @@ export class BlogService {
     return pagination(await query.execute(), input.limit);
   }
 
-  getById(id: string) {
-    return this.#db
+  getById(id: string, trx: Transaction<DB> | Kysely<DB> = this.#db) {
+    return trx
       .selectFrom('blogs as b')
       .leftJoinLateral(
         (eb) =>
