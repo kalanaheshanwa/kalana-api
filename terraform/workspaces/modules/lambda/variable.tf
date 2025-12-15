@@ -33,6 +33,16 @@ variable "s3_uploads_id" {
   description = "Name/Id of the S3 bucket for uploads"
 }
 
+variable "cognito_admin_pool_id" {
+  type        = string
+  description = "Cognito user pool id"
+}
+
+variable "cognito_admin_pool_client_ids" {
+  type        = list(string)
+  description = "Cognito user pool client ids"
+}
+
 # lambda env
 variable "NODE_ENV" {
   type        = string

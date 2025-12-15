@@ -99,6 +99,8 @@ resource "aws_lambda_function" "handler" {
       "APP_AWS_REGION"                 = var.APP_AWS_REGION
       "APP_AWS_UPLOADS_S3_BUCKET_NAME" = var.s3_uploads_id
       "APP_AWS_DB_CONNECT_ROLE_ARN"    = var.dsql_connect_role_arn
+      APP_AWS_COGNITO_USER_POOL_ID     = var.cognito_admin_pool_id
+      APP_AWS_COGNITO_CLIENT_IDS       = join(",", var.cognito_admin_pool_client_ids)
     }
   }
 }

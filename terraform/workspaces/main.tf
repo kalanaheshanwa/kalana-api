@@ -48,13 +48,15 @@ module "dsql" {
 module "lambda" {
   source = "./modules/lambda"
 
-  project_namespace     = var.project_namespace
-  env                   = var.env
-  v_api                 = var.v_api
-  dsql_cluster_arn      = module.dsql.cluster_arn
-  dsql_connect_role_arn = module.dsql.role_arn
-  s3_uploads_arn        = module.s3.uploads_arn
-  s3_uploads_id         = module.s3.uploads_id
+  project_namespace             = var.project_namespace
+  env                           = var.env
+  v_api                         = var.v_api
+  dsql_cluster_arn              = module.dsql.cluster_arn
+  dsql_connect_role_arn         = module.dsql.role_arn
+  s3_uploads_arn                = module.s3.uploads_arn
+  s3_uploads_id                 = module.s3.uploads_id
+  cognito_admin_pool_id         = module.cognito.admin_pool_id
+  cognito_admin_pool_client_ids = [module.cognito.admin_pool_client_id_web, module.cognito.admin_pool_client_id_cli]
 
   NODE_ENV             = var.NODE_ENV
   CORS_ALLOWED_ORIGINS = var.CORS_ALLOWED_ORIGINS
