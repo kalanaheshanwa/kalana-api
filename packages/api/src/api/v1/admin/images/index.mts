@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncMiddleware, uploadMiddleware } from '../../../../middleware/index.mjs';
+import { asyncMiddleware, isAuthenticated, uploadMiddleware } from '../../../../middleware/index.mjs';
 import { ImageService } from '../../../../services/index.mjs';
 import { AppContext } from '../../../../types/index.mjs';
 
@@ -44,6 +44,7 @@ export default function (context: AppContext): Router {
    */
   router.post(
     '/:type/:id',
+    isAuthenticated(context),
     uploadMiddleware.array('files', 5),
     asyncMiddleware(async (req, res) => {
       const type = req.params.type as 'portfolio' | 'blog';
