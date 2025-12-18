@@ -40,6 +40,7 @@ CREATE TABLE "portfolios" (
     "title" TEXT NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'DRAFT',
     "summary" TEXT NOT NULL,
+    "thumbnail" TEXT NOT NULL,
     "body" TEXT NOT NULL,
     "websiteUrl" TEXT NOT NULL,
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -77,6 +78,7 @@ CREATE TABLE "blogs" (
     "title" TEXT NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'DRAFT',
     "summary" TEXT NOT NULL,
+    "thumbnail" TEXT NOT NULL,
     "body" TEXT NOT NULL,
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ NOT NULL,
@@ -104,3 +106,14 @@ CREATE TABLE "categories_on_blogs" (
 );
 
 CREATE INDEX ASYNC "categories_on_blogs_categoryId_blogId_idx" ON "categories_on_blogs"("categoryId", "blogId");
+
+DROP TABLE IF EXISTS "images";
+CREATE TABLE "images" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "url" TEXT NOT NULL,
+    "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "images_pkey" PRIMARY KEY ("id")
+);
+
+CREATE INDEX ASYNC "images_id_createdAt_idx" ON "images"("id", "createdAt");

@@ -80,6 +80,7 @@ export class PortfolioService {
         'p.title',
         'p.status',
         'p.summary',
+        'p.thumbnail',
         'p.createdAt',
         'cats.combined as categories',
       ]);
@@ -115,6 +116,7 @@ export class PortfolioService {
         'p.title',
         'p.status',
         'p.summary',
+        'p.thumbnail',
         'p.websiteUrl',
         'p.body',
         'p.createdAt',

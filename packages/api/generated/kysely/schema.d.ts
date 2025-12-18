@@ -25,6 +25,7 @@ export interface Blog {
   id: Generated<string>;
   status: Generated<string>;
   summary: string;
+  thumbnail: string;
   title: string;
   updatedAt: Timestamp;
 }
@@ -58,6 +59,12 @@ export interface DocStatus {
   updatedAt: Timestamp;
 }
 
+export interface Image {
+  createdAt: Generated<Timestamp>;
+  id: Generated<string>;
+  url: string;
+}
+
 export interface PortfolioCategory {
   createdAt: Generated<Timestamp>;
   description: string;
@@ -72,6 +79,7 @@ export interface Portfolio {
   id: Generated<string>;
   status: Generated<string>;
   summary: string;
+  thumbnail: string;
   title: string;
   updatedAt: Timestamp;
   websiteUrl: string;
@@ -84,6 +92,7 @@ export interface DB {
   categories_on_portfolios: CategoriesOnPortfolio;
   contact_submissions: ContactSubmission;
   doc_statuses: DocStatus;
+  images: Image;
   portfolio_categories: PortfolioCategory;
   portfolios: Portfolio;
 }

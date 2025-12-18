@@ -59,35 +59,36 @@ export class BlogService {
 
   async list(input: BlogListQuerySchema) {
     let query = this.#db
-      .selectFrom('blogs as p')
+      .selectFrom('blogs as b')
       .leftJoinLateral(
         (eb) =>
           eb
             .selectFrom('categories_on_blogs as cop')
             .select(({ fn }) => [fn.agg<string[]>('array_agg', ['cop.categoryId']).as('combined')])
-            .whereRef('cop.blogId', '=', 'p.id')
+            .whereRef('cop.blogId', '=', 'b.id')
             .as('cats'),
         (join) => join.onTrue(),
       )
       .select([
-        'p.id',
-        'p.canonical',
-        'p.title',
-        'p.status',
-        'p.summary',
-        'p.createdAt',
+        'b.id',
+        'b.canonical',
+        'b.title',
+        'b.status',
+        'b.summary',
+        'b.thumbnail',
+        'b.createdAt',
         'cats.combined as categories',
       ]);
 
     if (input.after) {
-      query = query.where('p.id', '>', input.after);
+      query = query.where('b.id', '>', input.after);
     }
 
     if (input.filter?.categories?.length) {
       query = query.where('cats.combined', '&&', sql.val(input.filter.categories));
     }
 
-    query = query.orderBy('p.createdAt', 'desc').orderBy('p.id', 'asc').limit(input.limit);
+    query = query.orderBy('b.createdAt', 'desc').orderBy('b.id', 'asc').limit(input.limit);
 
     return pagination(await query.execute(), input.limit);
   }
@@ -110,6 +111,7 @@ export class BlogService {
         'b.title',
         'b.status',
         'b.summary',
+        'b.thumbnail',
         'b.body',
         'b.createdAt',
         'cats.combined as categories',

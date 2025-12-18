@@ -5,6 +5,7 @@ export const blogCreateSchema = z.object({
   title: z.string().max(50),
   status: z.enum(['PUBLISHED', 'DRAFT']).optional(),
   summary: z.string().max(250),
+  thumbnail: z.string().max(400),
   body: z.string(),
   categories: z.string().max(50).array().nonempty(),
 });
