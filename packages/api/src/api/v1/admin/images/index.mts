@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncMiddleware, isAuthenticated, uploadMiddleware } from '../../../../middleware/index.mjs';
+import { asyncMiddleware, uploadMiddleware } from '../../../../middleware/index.mjs';
 import { ImageService } from '../../../../services/index.mjs';
 import { AppContext } from '../../../../types/index.mjs';
 
@@ -15,6 +15,8 @@ export default function (context: AppContext): Router {
    *     tags:
    *       - Images
    *       - Admin
+   *     security:
+   *       - bearerAuth: []
    *     summary: Add images to a resource
    *     parameters:
    *       - in: path
@@ -44,15 +46,18 @@ export default function (context: AppContext): Router {
    */
   router.post(
     '/:type/:id',
-    isAuthenticated(context),
     uploadMiddleware.array('files', 5),
     asyncMiddleware(async (req, res) => {
+      if (!['portfolio', 'blog'].includes(req.params.type)) {
+        return res.status(400).json({ message: 'Invalid image type.' });
+      }
+
       const type = req.params.type as 'portfolio' | 'blog';
       const id = req.params.id;
       const files = req.files as Express.Multer.File[];
 
       if (!files || files.length === 0) {
-        return res.status(400).json({ message: 'No images uploaded' });
+        return res.status(400).json({ message: 'No images uploaded.' });
       }
 
       const urls = await _image.upload(type, id, files);

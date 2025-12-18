@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncMiddleware, isAuthenticated, validateSchema } from '../../../../../middleware/index.mjs';
+import { asyncMiddleware, validateSchema } from '../../../../../middleware/index.mjs';
 import { blogCategoryCreateSchema } from '../../../../../schemas/index.mjs';
 import { BlogService } from '../../../../../services/index.mjs';
 import { AppContext } from '../../../../../types/index.mjs';
@@ -30,7 +30,6 @@ export default function (context: AppContext): Router {
    */
   router.post(
     '/',
-    isAuthenticated(context),
     validateSchema(blogCategoryCreateSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _blog.createCategory(req.body);

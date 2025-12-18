@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncMiddleware, isAuthenticated, validateSchema } from '../../../../../middleware/index.mjs';
+import { asyncMiddleware, validateSchema } from '../../../../../middleware/index.mjs';
 import { portfolioCategoryCreateSchema } from '../../../../../schemas/index.mjs';
 import { PortfolioService } from '../../../../../services/index.mjs';
 import { AppContext } from '../../../../../types/index.mjs';
@@ -30,7 +30,6 @@ export default function (context: AppContext): Router {
    */
   router.post(
     '/',
-    isAuthenticated(context),
     validateSchema(portfolioCategoryCreateSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.createCategory(req.body);

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { isAuthenticated } from '../../middleware/index.mjs';
 import { AppContext } from '../../types/index.mjs';
 import admin from './admin/index.mjs';
 import blog from './public/blog/index.mjs';
@@ -8,7 +9,7 @@ import portfolio from './public/portfolio/index.mjs';
 const router = Router();
 
 export default function (context: AppContext): Router {
-  router.use('/admin', admin(context));
+  router.use('/admin', isAuthenticated(context), admin(context));
 
   // Public endpoints
   router.use('/contact', contact(context));

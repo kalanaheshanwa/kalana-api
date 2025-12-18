@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncMiddleware, isAuthenticated, validateSchema } from '../../../../middleware/index.mjs';
+import { asyncMiddleware, validateSchema } from '../../../../middleware/index.mjs';
 import { portfolioCreateSchema, portfolioUpdateSchema } from '../../../../schemas/index.mjs';
 import { PortfolioService } from '../../../../services/index.mjs';
 import { AppContext } from '../../../../types/index.mjs';
@@ -10,7 +10,7 @@ const router = Router();
 export default function (context: AppContext): Router {
   const _portfolio = new PortfolioService(context);
 
-  router.use('/categories', isAuthenticated(context), categories(context));
+  router.use('/categories', categories(context));
 
   /**
    * @openapi
@@ -33,7 +33,6 @@ export default function (context: AppContext): Router {
    */
   router.post(
     '/',
-    isAuthenticated(context),
     validateSchema(portfolioCreateSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.create(req.body);
@@ -65,7 +64,6 @@ export default function (context: AppContext): Router {
    */
   router.get(
     '/:id',
-    isAuthenticated(context),
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.getById(req.params.id);
 
@@ -101,7 +99,6 @@ export default function (context: AppContext): Router {
    */
   router.put(
     '/:id',
-    isAuthenticated(context),
     validateSchema(portfolioUpdateSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.update(req.params.id, req.body);
