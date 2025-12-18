@@ -1,31 +1,29 @@
 import { Router } from 'express';
 import { asyncMiddleware, validateSchema } from '../../../../middleware/index.mjs';
-import { BlogService } from '../../../../services/index.mjs';
+import { submissionSchema } from '../../../../schemas/contact/index.mjs';
+import { ContactService } from '../../../../services/index.mjs';
 import { AppContext } from '../../../../types/index.mjs';
-import { createSchema } from './schemas/index.mjs';
 
 const router = Router();
 
 export default function (context: AppContext): Router {
-  const _blog = new BlogService(context);
+  const _contact = new ContactService(context);
 
   /**
    * @openapi
-   * /api/v1/blogs/categories:
+   * /api/v1/contact:
    *   get:
    *     tags:
-   *       - Blog
-   *     security:
-   *       - bearerAuth: []
-   *     summary: List all blog categories paginated
+   *       - Contact
+   *     summary: List all contact submissions paginated
    *     responses:
    *       201:
-   *         description: List all blog categories paginated
+   *         description: List all contact submissions paginated
    */
   router.get(
     '/',
     asyncMiddleware(async (_req, res) => {
-      const data = await _blog.listCategories();
+      const data = await _contact.list();
 
       return res.status(200).json({ data });
     }),
@@ -33,27 +31,25 @@ export default function (context: AppContext): Router {
 
   /**
    * @openapi
-   * /api/v1/blogs/categories:
+   * /api/v1/contact:
    *   post:
    *     tags:
-   *       - Blog
-   *     security:
-   *       - bearerAuth: []
-   *     summary: Creates a blog category
+   *       - Contact
+   *     summary: Creates a contact submission
    *     requestBody:
    *       content:
    *         application/json:
    *           schema:
-   *             $ref: "#/components/schemas/CategoryCreate"
+   *             $ref: "#/components/schemas/ContactSubmission"
    *     responses:
    *       201:
-   *         description: Creates an entry in blog_categories
+   *         description: Creates an entry in contact submissions
    */
   router.post(
     '/',
-    validateSchema(createSchema),
+    validateSchema(submissionSchema),
     asyncMiddleware(async (req, res) => {
-      const data = await _blog.createCategory(req.body);
+      const data = await _contact.create(req.body);
 
       return res.status(201).json({ data });
     }),

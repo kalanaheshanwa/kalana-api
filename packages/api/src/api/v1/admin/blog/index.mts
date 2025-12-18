@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { asyncMiddleware, isAuthenticated, validateSchema } from '../../../middleware/index.mjs';
-import { BlogService } from '../../../services/index.mjs';
-import { AppContext } from '../../../types/index.mjs';
+import { asyncMiddleware, isAuthenticated, validateSchema } from '../../../../middleware/index.mjs';
+import { blogCreateSchema, blogUpdateSchema } from '../../../../schemas/index.mjs';
+import { BlogService } from '../../../../services/index.mjs';
+import { AppContext } from '../../../../types/index.mjs';
 import categories from './categories/index.mjs';
-import { BlogListQuerySchema, createSchema, listQuerySchema, updateSchema } from './schemas/index.mjs';
 
 const router = Router();
 
@@ -14,54 +14,11 @@ export default function (context: AppContext): Router {
 
   /**
    * @openapi
-   * /api/v1/blogs:
-   *   get:
-   *     tags:
-   *       - Blog
-   *     summary: List all blogs paginated
-   *     parameters:
-   *       - name: limit
-   *         in: query
-   *         description: Number of items to return
-   *         required: false
-   *         schema:
-   *           type: integer
-   *           format: int32
-   *           minimum: 1
-   *           maximum: 20
-   *       - name: after
-   *         in: query
-   *         description: Cursor of the last item
-   *         required: false
-   *         schema:
-   *           type: string
-   *       - name: filter
-   *         in: query
-   *         description: Stringified JSON object
-   *         required: false
-   *         schema:
-   *           type: string
-   *         example: '{"categories":["Business"]}'
-   *     responses:
-   *       200:
-   *         description: List all blogs paginated
-   */
-  router.get(
-    '/',
-    validateSchema(listQuerySchema, 'query'),
-    asyncMiddleware(async (req, res) => {
-      const nodes = await _blog.list(req.query as unknown as BlogListQuerySchema);
-
-      return res.status(200).json({ data: nodes });
-    }),
-  );
-
-  /**
-   * @openapi
-   * /api/v1/blogs:
+   * /api/v1/admin/blogs:
    *   post:
    *     tags:
    *       - Blog
+   *       - Admin
    *     security:
    *       - bearerAuth: []
    *     summary: Creates a blog
@@ -77,7 +34,7 @@ export default function (context: AppContext): Router {
   router.post(
     '/',
     isAuthenticated(context),
-    validateSchema(createSchema),
+    validateSchema(blogCreateSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _blog.create(req.body);
 
@@ -87,10 +44,11 @@ export default function (context: AppContext): Router {
 
   /**
    * @openapi
-   * /api/v1/blogs/{id}:
+   * /api/v1/admin/blogs/{id}:
    *   get:
    *     tags:
    *       - Blog
+   *       - Admin
    *     security:
    *       - bearerAuth: []
    *     summary: Get a blog
@@ -117,10 +75,11 @@ export default function (context: AppContext): Router {
 
   /**
    * @openapi
-   * /api/v1/blogs/{id}:
+   * /api/v1/admin/blogs/{id}:
    *   put:
    *     tags:
    *       - Blog
+   *       - Admin
    *     security:
    *       - bearerAuth: []
    *     summary: Updates a blog
@@ -143,7 +102,7 @@ export default function (context: AppContext): Router {
   router.put(
     '/:id',
     isAuthenticated(context),
-    validateSchema(updateSchema),
+    validateSchema(blogUpdateSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _blog.update(req.params.id, req.body);
 

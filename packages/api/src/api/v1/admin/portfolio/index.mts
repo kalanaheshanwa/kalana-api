@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { asyncMiddleware, isAuthenticated, validateSchema } from '../../../middleware/index.mjs';
-import { PortfolioService } from '../../../services/index.mjs';
-import { AppContext } from '../../../types/index.mjs';
+import { asyncMiddleware, isAuthenticated, validateSchema } from '../../../../middleware/index.mjs';
+import { portfolioCreateSchema, portfolioUpdateSchema } from '../../../../schemas/index.mjs';
+import { PortfolioService } from '../../../../services/index.mjs';
+import { AppContext } from '../../../../types/index.mjs';
 import categories from './categories/index.mjs';
-import { createSchema, listQuerySchema, PortfolioListQuerySchema, updateSchema } from './schemas/index.mjs';
 
 const router = Router();
 
@@ -14,54 +14,11 @@ export default function (context: AppContext): Router {
 
   /**
    * @openapi
-   * /api/v1/portfolios:
-   *   get:
-   *     tags:
-   *       - Portfolio
-   *     summary: List all portfolios paginated
-   *     parameters:
-   *       - name: limit
-   *         in: query
-   *         description: Number of items to return
-   *         required: false
-   *         schema:
-   *           type: integer
-   *           format: int32
-   *           minimum: 1
-   *           maximum: 20
-   *       - name: after
-   *         in: query
-   *         description: Cursor of the last item
-   *         required: false
-   *         schema:
-   *           type: string
-   *       - name: filter
-   *         in: query
-   *         description: Stringified JSON object
-   *         required: false
-   *         schema:
-   *           type: string
-   *         example: '{"categories":["Business"]}'
-   *     responses:
-   *       201:
-   *         description: List all portfolios paginated
-   */
-  router.get(
-    '/',
-    validateSchema(listQuerySchema, 'query'),
-    asyncMiddleware(async (req, res) => {
-      const data = await _portfolio.list(req.query as unknown as PortfolioListQuerySchema);
-
-      return res.status(200).json({ data });
-    }),
-  );
-
-  /**
-   * @openapi
-   * /api/v1/portfolios:
+   * /api/v1/admin/portfolios:
    *   post:
    *     tags:
    *       - Portfolio
+   *       - Admin
    *     security:
    *       - bearerAuth: []
    *     summary: Creates a portfolio
@@ -77,7 +34,7 @@ export default function (context: AppContext): Router {
   router.post(
     '/',
     isAuthenticated(context),
-    validateSchema(createSchema),
+    validateSchema(portfolioCreateSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.create(req.body);
 
@@ -87,10 +44,11 @@ export default function (context: AppContext): Router {
 
   /**
    * @openapi
-   * /api/v1/portfolios/{id}:
+   * /api/v1/admin/portfolios/{id}:
    *   get:
    *     tags:
    *       - Portfolio
+   *       - Admin
    *     security:
    *       - bearerAuth: []
    *     summary: Get a portfolio
@@ -117,10 +75,11 @@ export default function (context: AppContext): Router {
 
   /**
    * @openapi
-   * /api/v1/portfolios/{id}:
+   * /api/v1/admin/portfolios/{id}:
    *   put:
    *     tags:
    *       - Portfolio
+   *       - Admin
    *     security:
    *       - bearerAuth: []
    *     summary: Updates a portfolio
@@ -143,7 +102,7 @@ export default function (context: AppContext): Router {
   router.put(
     '/:id',
     isAuthenticated(context),
-    validateSchema(updateSchema),
+    validateSchema(portfolioUpdateSchema),
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.update(req.params.id, req.body);
 

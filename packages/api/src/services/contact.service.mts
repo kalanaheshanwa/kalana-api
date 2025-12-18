@@ -1,6 +1,6 @@
 import * as db from 'zapatos/db';
 import type * as s from 'zapatos/schema';
-import { ContactSubmissionSchema } from '../api/v1/contact/schemas/index.mjs';
+import { ContactSubmissionSchema } from '../schemas/index.mjs';
 import { AppContext } from '../types/index.mjs';
 
 export class ContactService {

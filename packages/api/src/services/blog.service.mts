@@ -1,16 +1,13 @@
 import { DB } from '#kysely/types';
 import { Kysely, sql, Transaction } from 'kysely';
 import _ from 'lodash';
-import * as db from 'zapatos/db';
 import type * as s from 'zapatos/schema';
-import { BlogCategoryCreateSchema } from '../api/v1/blog/categories/schemas/index.mjs';
-import { BlogCreateSchema, BlogListQuerySchema } from '../api/v1/blog/schemas/index.mjs';
+import { BlogCategoryCreateSchema, BlogCreateSchema, BlogListQuerySchema } from '../schemas/index.mjs';
 import { AppContext } from '../types/index.mjs';
 import { pagination, withUpdated } from '../utils/index.mjs';
 
 export class BlogService {
   readonly #db: AppContext['db'];
-  private readonly pool: AppContext['pool'];
 
   constructor({ db }: AppContext) {
     this.#db = db;
@@ -121,13 +118,11 @@ export class BlogService {
       .executeTakeFirst();
   }
 
-  createCategory(data: BlogCategoryCreateSchema): Promise<s.blog_categories.JSONSelectable> {
-    return db.insert('blog_categories', withUpdated(data)).run(this.pool);
+  createCategory(data: BlogCategoryCreateSchema) {
+    return this.#db.insertInto('blog_categories').values(withUpdated(data)).returningAll().executeTakeFirstOrThrow();
   }
 
   listCategories(): Promise<s.blog_categories.Selectable[]> {
-    return db.sql<s.blog_categories.SQL, s.blog_categories.Selectable[]>`
-      SELECT * FROM ${'blog_categories'}
-    `.run(this.pool);
+    return this.#db.selectFrom('blog_categories').selectAll().execute();
   }
 }

@@ -1,8 +1,7 @@
 import { Kysely, sql, Transaction } from 'kysely';
 import _ from 'lodash';
 import { DB } from '../../generated/kysely/schema.js';
-import { PortfolioCategoryCreateSchema } from '../api/v1/portfolio/categories/schemas/index.mjs';
-import { PortfolioCreateSchema, PortfolioListQuerySchema } from '../api/v1/portfolio/schemas/index.mjs';
+import { PortfolioCategoryCreateSchema, PortfolioCreateSchema, PortfolioListQuerySchema } from '../schemas/index.mjs';
 import { AppContext } from '../types/index.mjs';
 import { pagination, withUpdated } from '../utils/index.mjs';
 

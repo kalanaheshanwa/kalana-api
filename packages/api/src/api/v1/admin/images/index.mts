@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { asyncMiddleware, uploadMiddleware } from '../../../middleware/index.mjs';
-import { ImageService } from '../../../services/index.mjs';
-import { AppContext } from '../../../types/index.mjs';
+import { asyncMiddleware, uploadMiddleware } from '../../../../middleware/index.mjs';
+import { ImageService } from '../../../../services/index.mjs';
+import { AppContext } from '../../../../types/index.mjs';
 
 const router = Router();
 
@@ -10,10 +10,11 @@ export default function (context: AppContext): Router {
 
   /**
    * @openapi
-   * /api/v1/images/{type}/{id}:
+   * /api/v1/admin/images/{type}/{id}:
    *   post:
    *     tags:
    *       - Images
+   *       - Admin
    *     summary: Add images to a resource
    *     parameters:
    *       - in: path
