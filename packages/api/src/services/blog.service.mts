@@ -30,7 +30,7 @@ export class BlogService {
           .values(input.categories.map((c) => ({ blogId: result.id, categoryId: c })))
           .execute();
 
-        return this.getById(result.id);
+        return this.getById(result.id, trx);
       });
   }
 
@@ -53,7 +53,7 @@ export class BlogService {
             .execute();
         }
 
-        return this.getById(id);
+        return this.getById(id, trx);
       });
   }
 
