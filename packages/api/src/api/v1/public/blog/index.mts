@@ -56,5 +56,32 @@ export default function (context: AppContext): Router {
     }),
   );
 
+  /**
+   * @openapi
+   * /api/v1/blogs/{canonical}:
+   *   get:
+   *     tags:
+   *       - Blog
+   *     summary: Get a blog
+   *     parameters:
+   *       - name: canonical
+   *         in: path
+   *         description: Canonical of the item to fetch
+   *         required: true
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         description: Get an entry in blogs
+   */
+  router.get(
+    '/:canonical',
+    asyncMiddleware(async (req, res) => {
+      const data = await _blog.getByCanonical(req.params.canonical);
+
+      return res.status(200).json({ data });
+    }),
+  );
+
   return router;
 }

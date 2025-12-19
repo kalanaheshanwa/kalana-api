@@ -120,6 +120,33 @@ export class BlogService {
       .executeTakeFirst();
   }
 
+  getByCanonical(canonical: string) {
+    return this.#db
+      .selectFrom('blogs as b')
+      .leftJoinLateral(
+        (eb) =>
+          eb
+            .selectFrom('categories_on_blogs as cop')
+            .select(({ fn }) => [fn.agg<string[]>('array_agg', ['cop.categoryId']).as('combined')])
+            .whereRef('cop.blogId', '=', 'b.id')
+            .as('cats'),
+        (join) => join.onTrue(),
+      )
+      .select([
+        'b.id',
+        'b.canonical',
+        'b.title',
+        'b.status',
+        'b.summary',
+        'b.thumbnail',
+        'b.body',
+        'b.createdAt',
+        'cats.combined as categories',
+      ])
+      .where('canonical', '=', canonical)
+      .executeTakeFirst();
+  }
+
   createCategory(data: BlogCategoryCreateSchema) {
     return this.#db.insertInto('blog_categories').values(withUpdated(data)).returningAll().executeTakeFirstOrThrow();
   }

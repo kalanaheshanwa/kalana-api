@@ -43,7 +43,7 @@ export default function (context: AppContext): Router {
    *           type: string
    *         example: '{"categories":["Business"]}'
    *     responses:
-   *       201:
+   *       200:
    *         description: List all portfolios paginated
    */
   router.get(
@@ -51,6 +51,33 @@ export default function (context: AppContext): Router {
     validateSchema(portfolioListQuerySchema, 'query'),
     asyncMiddleware(async (req, res) => {
       const data = await _portfolio.list(req.query as unknown as PortfolioListQuerySchema);
+
+      return res.status(200).json({ data });
+    }),
+  );
+
+  /**
+   * @openapi
+   * /api/v1/portfolios/{canonical}:
+   *   get:
+   *     tags:
+   *       - Portfolio
+   *     summary: Get a portfolio
+   *     parameters:
+   *       - name: canonical
+   *         in: path
+   *         description: Canonical of the item to fetch
+   *         required: true
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         description: Get an entry in portfolios
+   */
+  router.get(
+    '/:canonical',
+    asyncMiddleware(async (req, res) => {
+      const data = await _portfolio.getByCanonical(req.params.canonical);
 
       return res.status(200).json({ data });
     }),
