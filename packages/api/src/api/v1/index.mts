@@ -12,7 +12,7 @@ export default function (context: AppContext): Router {
   router.use('/admin', isAuthenticated(context), admin(context));
 
   // Public endpoints
-  router.use('/contact', contact(context));
+  router.use('/contacts', contact(context));
   router.use('/blogs', blog(context));
   router.use('/portfolios', portfolio(context));
 
