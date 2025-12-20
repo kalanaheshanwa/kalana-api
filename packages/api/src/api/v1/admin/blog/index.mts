@@ -59,7 +59,7 @@ export default function (context: AppContext): Router {
    *         schema:
    *           type: string
    *     responses:
-   *       201:
+   *       200:
    *         description: Get an entry in blogs
    */
   router.get(
@@ -94,7 +94,7 @@ export default function (context: AppContext): Router {
    *           schema:
    *             $ref: "#/components/schemas/BlogCreate"
    *     responses:
-   *       201:
+   *       200:
    *         description: Updates an entry in blogs
    */
   router.put(

@@ -49,5 +49,65 @@ export default function (context: AppContext): Router {
     }),
   );
 
+  /**
+   * @openapi
+   * /api/v1/admin/contacts/{id}:
+   *   get:
+   *     tags:
+   *       - Contact
+   *       - Admin
+   *     security:
+   *       - bearerAuth: []
+   *     summary: Get a contact
+   *     parameters:
+   *       - name: id
+   *         in: path
+   *         description: Id of the item to update
+   *         required: true
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         description: Get an entry in contact_submissions
+   */
+  router.get(
+    '/:id',
+    asyncMiddleware(async (req, res) => {
+      const data = await _contact.getById(req.params.id);
+
+      return res.status(200).json({ data });
+    }),
+  );
+
+  /**
+   * @openapi
+   * /api/v1/admin/contacts/{id}/read:
+   *   get:
+   *     tags:
+   *       - Contact
+   *       - Admin
+   *     security:
+   *       - bearerAuth: []
+   *     summary: Mark a contact as read
+   *     parameters:
+   *       - name: id
+   *         in: path
+   *         description: Id of the item to update
+   *         required: true
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         description: Set read column to true of an entry in contact_submissions
+   */
+  router.put(
+    '/:id/read',
+    asyncMiddleware(async (req, res) => {
+      await _contact.setRead(req.params.id);
+
+      return res.status(200).json({ data: null });
+    }),
+  );
+
   return router;
 }

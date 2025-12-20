@@ -16,21 +16,7 @@ export class ContactService {
   async list(input: ContactListQuerySchema) {
     let query = this.#db
       .selectFrom('contact_submissions as cs')
-      .select(['cs.id', 'cs.email', 'cs.name', 'cs.subject', 'cs.createdAt']);
-
-    // if (input.after) {
-    //   const cursorTuple = decodeCursor<Pick<Selectable<ContactSubmission>, 'createdAt' | 'id'>>(input.after);
-    //   query = query.where(({ eb, tuple, refTuple }) =>
-    //     eb(refTuple('cs.createdAt', 'cs.id'), '<', tuple(cursorTuple.createdAt, cursorTuple.id)),
-    //   );
-    // }
-
-    // query = query
-    //   .orderBy('cs.createdAt', 'desc')
-    //   .orderBy('cs.id', 'desc')
-    //   .limit(input.limit + 1);
-
-    // return pagination(await query.execute(), ['createdAt', 'id'], input.limit);
+      .select(['cs.id', 'cs.email', 'cs.name', 'cs.subject', 'cs.read', 'cs.createdAt']);
 
     return paginate(
       query,
@@ -39,5 +25,17 @@ export class ContactService {
       input.limit,
       input.after,
     ).execute();
+  }
+
+  getById(id: string) {
+    return this.#db
+      .selectFrom('contact_submissions as cs')
+      .select(['cs.id', 'cs.email', 'cs.name', 'cs.subject', 'cs.message', 'cs.read', 'cs.createdAt'])
+      .where('id', '=', id)
+      .executeTakeFirst();
+  }
+
+  setRead(id: string) {
+    return this.#db.updateTable('contact_submissions').set('read', true).where('id', '=', id).executeTakeFirstOrThrow();
   }
 }
