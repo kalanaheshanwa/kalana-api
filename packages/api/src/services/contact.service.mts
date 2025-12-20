@@ -1,22 +1,43 @@
-import * as db from 'zapatos/db';
-import type * as s from 'zapatos/schema';
-import { ContactSubmissionSchema } from '../schemas/index.mjs';
+import { ContactListQuerySchema, ContactSubmissionSchema } from '../schemas/index.mjs';
 import { AppContext } from '../types/index.mjs';
+import { paginate } from '../utils/index.mjs';
 
 export class ContactService {
-  private readonly pool: AppContext['pool'];
+  readonly #db: AppContext['db'];
 
-  constructor({ pool }: AppContext) {
-    this.pool = pool;
+  constructor({ db }: AppContext) {
+    this.#db = db;
   }
 
-  create(data: ContactSubmissionSchema): Promise<s.contact_submissions.JSONSelectable> {
-    return db.insert('contact_submissions', data).run(this.pool);
+  create(data: ContactSubmissionSchema) {
+    return this.#db.insertInto('contact_submissions').values(data).returningAll().execute();
   }
 
-  list(): Promise<s.contact_submissions.Selectable[]> {
-    return db.sql<s.contact_submissions.SQL, s.contact_submissions.Selectable[]>`
-      SELECT * FROM ${'contact_submissions'}
-    `.run(this.pool);
+  async list(input: ContactListQuerySchema) {
+    let query = this.#db
+      .selectFrom('contact_submissions as cs')
+      .select(['cs.id', 'cs.email', 'cs.name', 'cs.subject', 'cs.createdAt']);
+
+    // if (input.after) {
+    //   const cursorTuple = decodeCursor<Pick<Selectable<ContactSubmission>, 'createdAt' | 'id'>>(input.after);
+    //   query = query.where(({ eb, tuple, refTuple }) =>
+    //     eb(refTuple('cs.createdAt', 'cs.id'), '<', tuple(cursorTuple.createdAt, cursorTuple.id)),
+    //   );
+    // }
+
+    // query = query
+    //   .orderBy('cs.createdAt', 'desc')
+    //   .orderBy('cs.id', 'desc')
+    //   .limit(input.limit + 1);
+
+    // return pagination(await query.execute(), ['createdAt', 'id'], input.limit);
+
+    return paginate(
+      query,
+      { col: 'cs.createdAt', direction: 'desc', output: 'createdAt' },
+      { col: 'cs.id', output: 'id' },
+      input.limit,
+      input.after,
+    ).execute();
   }
 }

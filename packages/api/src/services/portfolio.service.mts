@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { DB } from '../../generated/kysely/schema.js';
 import { PortfolioCategoryCreateSchema, PortfolioCreateSchema, PortfolioListQuerySchema } from '../schemas/index.mjs';
 import { AppContext } from '../types/index.mjs';
-import { pagination, withUpdated } from '../utils/index.mjs';
+import { paginate, withUpdated } from '../utils/index.mjs';
 
 export class PortfolioService {
   readonly #db: AppContext['db'];
@@ -85,17 +85,17 @@ export class PortfolioService {
         'cats.combined as categories',
       ]);
 
-    if (input.after) {
-      query = query.where('p.id', '>', input.after);
-    }
-
     if (input.filter?.categories?.length) {
       query = query.where('cats.combined', '&&', sql.val(input.filter.categories));
     }
 
-    query = query.orderBy('p.createdAt', 'desc').orderBy('p.id', 'asc').limit(input.limit);
-
-    return pagination(await query.execute(), input.limit);
+    return paginate(
+      query,
+      { col: 'p.createdAt', direction: 'desc', output: 'createdAt' },
+      { col: 'p.id', output: 'id' },
+      input.limit,
+      input.after,
+    ).execute();
   }
 
   getById(id: string, trx: Transaction<DB> | Kysely<DB> = this.#db) {

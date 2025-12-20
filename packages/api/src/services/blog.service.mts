@@ -4,7 +4,7 @@ import _ from 'lodash';
 import type * as s from 'zapatos/schema';
 import { BlogCategoryCreateSchema, BlogCreateSchema, BlogListQuerySchema } from '../schemas/index.mjs';
 import { AppContext } from '../types/index.mjs';
-import { pagination, withUpdated } from '../utils/index.mjs';
+import { paginate, withUpdated } from '../utils/index.mjs';
 
 export class BlogService {
   readonly #db: AppContext['db'];
@@ -80,17 +80,17 @@ export class BlogService {
         'cats.combined as categories',
       ]);
 
-    if (input.after) {
-      query = query.where('b.id', '>', input.after);
-    }
-
     if (input.filter?.categories?.length) {
       query = query.where('cats.combined', '&&', sql.val(input.filter.categories));
     }
 
-    query = query.orderBy('b.createdAt', 'desc').orderBy('b.id', 'asc').limit(input.limit);
-
-    return pagination(await query.execute(), input.limit);
+    return paginate(
+      query,
+      { col: 'b.createdAt', direction: 'desc', output: 'createdAt' },
+      { col: 'b.id', output: 'id' },
+      input.limit,
+      input.after,
+    ).execute();
   }
 
   getById(id: string, trx: Transaction<DB> | Kysely<DB> = this.#db) {

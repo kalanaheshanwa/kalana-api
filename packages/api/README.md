@@ -10,3 +10,8 @@ https://docs.aws.amazon.com/aurora-dsql/latest/userguide/SECTION_authentication-
 ```sh
 aws dsql generate-db-connect-auth-token --hostname=mbti7hgg7am3rzqp4jxvmfuxty.dsql.us-east-1.on.aws --region=us-east-1 --expires-in=3600 --profile kalanah-dev
 ```
+
+```sh
+aws dsql generate-db-connect-admin-auth-token --hostname=b5tjj4tqy2qudje346alshlmua.dsql.us-east-1.on.aws --region=us-east-1 --
+expires-in=3600 --profile kalanah-dev
+```

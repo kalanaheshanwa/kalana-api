@@ -1,6 +1,6 @@
 import { ImageListQuerySchema } from '../schemas/index.mjs';
 import { AppContext } from '../types/index.mjs';
-import { appError, AppErrorCode, pagination } from '../utils/index.mjs';
+import { appError, AppErrorCode, paginate } from '../utils/index.mjs';
 import { UploadService } from './upload.service.mjs';
 
 export class ImageService {
@@ -56,15 +56,12 @@ export class ImageService {
   async listBucket(input: ImageListQuerySchema) {
     let query = this.#db.selectFrom('images as i').selectAll();
 
-    if (input.after) {
-      query = query.where('i.id', '>', input.after);
-    }
-
-    query = query
-      .orderBy('i.createdAt', 'desc')
-      .orderBy('i.id', 'asc')
-      .limit(input.limit + 1);
-
-    return pagination(await query.execute(), input.limit);
+    return paginate(
+      query,
+      { col: 'i.createdAt', direction: 'desc', output: 'createdAt' },
+      { col: 'i.id', output: 'id' },
+      input.limit,
+      input.after,
+    ).execute();
   }
 }
