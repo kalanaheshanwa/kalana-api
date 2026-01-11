@@ -2,13 +2,19 @@ import { z } from 'zod';
 
 export const portfolioCreateSchema = z.object({
   canonical: z.string().max(100),
-  title: z.string().max(50),
+  title: z.string().max(100),
   status: z.enum(['PUBLISHED', 'DRAFT']).optional(),
-  summary: z.string().max(250),
-  thumbnail: z.string().max(400),
+  summary: z.string(),
   body: z.string(),
   websiteUrl: z.string().url(),
   categories: z.string().max(50).array().nonempty(),
+  clientName: z.string().max(100),
+  coverImage: z.string().max(400),
+  thumbnail: z.string().max(400),
+  images: z.string().max(400).array(),
+  technologies: z.string().max(100).array(),
+  deliveredItems: z.string().max(800).array().max(5),
+  durationDays: z.number().positive().int().max(10_000),
 });
 
 export type PortfolioCreateSchema = z.infer<typeof portfolioCreateSchema>;

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { DB } from '../../generated/kysely/schema.js';
 import { PortfolioCategoryCreateSchema, PortfolioCreateSchema, PortfolioListQuerySchema } from '../schemas/index.mjs';
 import { AppContext } from '../types/index.mjs';
-import { paginate, withUpdated } from '../utils/index.mjs';
+import { paginate, toJsonString, withUpdated } from '../utils/index.mjs';
 
 export class PortfolioService {
   readonly #db: AppContext['db'];
@@ -19,7 +19,12 @@ export class PortfolioService {
       .execute(async (trx) => {
         const result = await trx
           .insertInto('portfolios')
-          .values(withUpdated(_.omit(input, ['categories'])))
+          .values(
+            withUpdated({
+              ..._.omit(input, ['categories', 'deliveredItems', 'images', 'technologies']),
+              ...toJsonString(_.pick(input, ['deliveredItems', 'images', 'technologies'])),
+            }),
+          )
           .returning(['id'])
           .executeTakeFirstOrThrow();
 
@@ -38,12 +43,15 @@ export class PortfolioService {
       .transaction()
       .setIsolationLevel('repeatable read')
       .execute(async (trx) => {
-        const updatable = _.omit(input, ['categories']);
+        const updatable = {
+          ..._.omit(input, ['categories', 'deliveredItems', 'images', 'technologies']),
+          ...toJsonString(_.pick(input, ['deliveredItems', 'images', 'technologies'])),
+        };
 
         if (Object.keys(updatable).length) {
           await trx
             .updateTable('portfolios')
-            .set(updatable)
+            .set(withUpdated(updatable))
             .where('id', '=', id)
             .returningAll()
             .executeTakeFirstOrThrow();
@@ -110,15 +118,22 @@ export class PortfolioService {
             .as('cats'),
         (join) => join.onTrue(),
       )
-      .select([
+      .select(({ ref }) => [
         'p.id',
         'p.canonical',
         'p.title',
         'p.status',
         'p.summary',
-        'p.thumbnail',
         'p.websiteUrl',
+        'p.thumbnail',
+        'p.coverImage',
+        'p.clientName',
+        'p.durationDays',
+        sql<string[]>`ARRAY(SELECT json_array_elements_text(${ref('deliveredItemsJson')}::json))`.as('deliveredItems'),
+        sql<string[]>`ARRAY(SELECT json_array_elements_text(${ref('technologiesJson')}::json))`.as('technologies'),
+        sql<string[]>`ARRAY(SELECT json_array_elements_text(${ref('imagesJson')}::json))`.as('images'),
         'p.body',
+        'p.createdAt',
         'p.createdAt',
         'cats.combined as categories',
       ])
@@ -138,15 +153,22 @@ export class PortfolioService {
             .as('cats'),
         (join) => join.onTrue(),
       )
-      .select([
+      .select(({ ref }) => [
         'p.id',
         'p.canonical',
         'p.title',
         'p.status',
         'p.summary',
-        'p.thumbnail',
         'p.websiteUrl',
+        'p.thumbnail',
+        'p.coverImage',
+        'p.clientName',
+        'p.durationDays',
+        sql<string[]>`ARRAY(SELECT json_array_elements_text(${ref('deliveredItemsJson')}::json))`.as('deliveredItems'),
+        sql<string[]>`ARRAY(SELECT json_array_elements_text(${ref('technologiesJson')}::json))`.as('technologies'),
+        sql<string[]>`ARRAY(SELECT json_array_elements_text(${ref('imagesJson')}::json))`.as('images'),
         'p.body',
+        'p.createdAt',
         'p.createdAt',
         'cats.combined as categories',
       ])

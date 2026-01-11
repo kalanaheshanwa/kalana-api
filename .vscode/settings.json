@@ -1,5 +1,12 @@
 {
-  "cSpell.words": ["kalanah", "kalanasquare", "kysely", "tfstates", "zapatos"],
+  "cSpell.words": [
+    "kalanah",
+    "kalanasquare",
+    "kysely",
+    "Squarespace",
+    "tfstates",
+    "zapatos"
+  ],
   "editor.formatOnSave": true,
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,

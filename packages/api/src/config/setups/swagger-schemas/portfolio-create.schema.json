@@ -25,6 +25,39 @@
         "type": "string"
       },
       "example": ["Business"]
+    },
+    "durationDays": { "type": "number", "example": 180 },
+    "clientName": { "type": "string", "example": "John Doe" },
+    "coverImage": { "type": "string", "example": "https://dev.kalanasquare.space/images/process-step-1.png" },
+    "thumbnail": { "type": "string", "example": "https://dev.kalanasquare.space/images/process-step-4.png" },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "https://dev.kalanasquare.space/images/process-step-2.png",
+        "https://dev.kalanasquare.space/images/process-step-3.png"
+      ]
+    },
+    "technologies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "example": ["Squarespace", "SEO Optimization"]
+    },
+    "deliveredItems": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "Achieved first-page rankings for 15+ high-value keywords",
+        "Generated 50+ qualified leads per month through organic search",
+        "Increased organic traffic by 245% in 6 months",
+        "Improved domain authority from 25 to 42"
+      ]
     }
   },
   "required": ["canonical", "title", "summary", "body", "categories"]

@@ -75,10 +75,16 @@ export interface PortfolioCategory {
 export interface Portfolio {
   body: string;
   canonical: string;
+  clientName: string;
+  coverImage: string;
   createdAt: Generated<Timestamp>;
+  deliveredItemsJson: string;
+  durationDays: number;
   id: Generated<string>;
+  imagesJson: string;
   status: Generated<string>;
   summary: string;
+  technologiesJson: string;
   thumbnail: string;
   title: string;
   updatedAt: Timestamp;
